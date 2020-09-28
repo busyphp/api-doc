@@ -1,0 +1,10 @@
+/.idea/
+/vendor/
+.DS_Store
+.env
+/app/
+/config/
+/public/
+/runtime/
+composer.lock
+composer.json.dev
