@@ -14,7 +14,22 @@ use ReflectionMethod;
  */
 class Scan
 {
+    /**
+     * @var array
+     */
     protected $classList = [];
+    
+    /**
+     * 移除控制器后缀
+     * @var string
+     */
+    protected $controllerSuffix = '';
+    
+    /**
+     * 移除方法后缀
+     * @var string
+     */
+    protected $methodSuffix = '';
     
     
     /**
@@ -35,6 +50,18 @@ class Scan
         }
         
         $this->classList = $classList;
+    }
+    
+    
+    /**
+     * 移除后缀
+     * @param string|callable $controller
+     * @param string|callable $method
+     */
+    public function removeSuffix($controller = '', $method = '')
+    {
+        $this->controllerSuffix = $controller;
+        $this->methodSuffix     = $method;
     }
     
     
@@ -93,10 +120,12 @@ class Scan
                 }
             }
             
+            $controllerName = $this->parseControllerName($reflectionClass->getShortName(), $reflectionClass->getName());
+            
             return [
                 'title'   => $title,
-                'module'  => $reflectionClass->getShortName(),
-                'id'      => $reflectionClass->getShortName(),
+                'module'  => $controllerName,
+                'id'      => $controllerName,
                 'class'   => $reflectionClass->getName(),
                 'list'    => $list,
                 'comment' => $reflectionClass->getDocComment()
@@ -143,10 +172,11 @@ class Scan
         }
         
         // 取出params、api、return
-        $list   = explode('@', $comment);
-        $params = [];
-        $return = '';
-        $type   = '';
+        $list    = explode('@', $comment);
+        $params  = [];
+        $return  = '';
+        $type    = '';
+        $example = '';
         foreach ($list as $item) {
             $item = trim($item);
             if (0 === stripos($item, 'return ')) {
@@ -155,6 +185,8 @@ class Scan
                 $params[] = trim($item);
             } elseif (0 === stripos($item, 'api ')) {
                 $type = $item;
+            } elseif (0 === stripos($item, 'example ')) {
+                $example = $item;
             }
         }
         
@@ -162,15 +194,49 @@ class Scan
         $type = trim(substr($type, 4));
         $type = $type ?: 'get';
         
+        // 输出示例
+        $example        = trim(substr($example, 8));
+        $controllerName = $this->parseControllerName($method->getDeclaringClass()->getShortName(), $method->getDeclaringClass());
+        $methodName     = $this->parseMethodName($method->getName(), $method->getDeclaringClass());
+        
         return [
             'title'   => $title,
-            'path'    => $method->getDeclaringClass()->getShortName() . '/' . $method->getName(),
-            'id'      => $method->getDeclaringClass()->getShortName() . '_' . $method->getName(),
+            'path'    => $controllerName . '/' . $methodName,
+            'id'      => $controllerName . '_' . $methodName,
             'type'    => strtoupper($type),
             'params'  => $this->parseParams($params),
             'return'  => $this->parseStructure(substr($return, 7)),
+            'example' => $example,
             'comment' => $comment
         ];
+    }
+    
+    
+    protected function parseControllerName($name, $class)
+    {
+        if (!$this->controllerSuffix) {
+            return $name;
+        }
+        
+        if (is_callable($this->controllerSuffix)) {
+            return call_user_func_array($this->controllerSuffix, [$name, $class]);
+        } else {
+            return substr($name, 0, -strlen($this->controllerSuffix));
+        }
+    }
+    
+    
+    protected function parseMethodName($name, $class)
+    {
+        if (!$this->methodSuffix) {
+            return $name;
+        }
+        
+        if (is_callable($this->methodSuffix)) {
+            return call_user_func_array($this->methodSuffix, [$name, $class]);
+        } else {
+            return substr($name, 0, -strlen($this->methodSuffix));
+        }
     }
     
     
@@ -187,7 +253,7 @@ class Scan
             if (!preg_match('/(.*?)\s+(.*?)\s+(.*)/s', $item, $match)) {
                 continue;
             }
-    
+            
             $key  = trim($match[2]);
             $must = false;
             if (0 === strpos($key, '!!!!!!')) {
@@ -224,16 +290,19 @@ class Scan
             $returnStructure = '';
         }
         
+        $returnType      = trim($returnType);
+        $returnStructure = trim($returnStructure);
+        
         return [
-            'title'     => trim($returnType),
-            'structure' => $hasType ? $this->parseStructureItems($returnStructure, $level) : $this->parseParamStructureItems($content, $level)
+            'title'     => $returnType,
+            'structure' => $hasType ? $this->parseStructureItems($returnStructure, $level) : $this->parseParamStructureItems($returnStructure, $level)
         ];
     }
     
     
     protected function parseParamStructureItems($content, $level)
     {
-        if ($level > 5) {
+        if ($level > 2) {
             return [];
         }
         

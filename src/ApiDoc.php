@@ -48,6 +48,16 @@ class ApiDoc
     
     
     /**
+     * 获取扫描器
+     * @return Scan
+     */
+    public function getScan() : Scan
+    {
+        return $this->scan;
+    }
+    
+    
+    /**
      * 获取文档分组数据
      * @return array
      */
@@ -62,8 +72,8 @@ class ApiDoc
     
     
     /**
-     * @todo 渲染成MarkDown
      * @return string
+     * @todo 渲染成MarkDown
      */
     public function renderToMarkDown()
     {
@@ -97,5 +107,18 @@ class ApiDoc
         } catch (Exception $e) {
             return '';
         }
+    }
+    
+    
+    /**
+     * 解析span
+     * @param $data
+     * @return mixed
+     */
+    public static function renderSpan($data)
+    {
+        $data = preg_replace('/`(.*?)`/', '<span class="badge badge-pill badge-dark">\\1</span>', $data);
+        
+        return $data;
     }
 }
