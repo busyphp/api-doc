@@ -190,7 +190,7 @@ class Scan
     
             $key  = trim($match[2]);
             $must = false;
-            if (0 == strpos($key, '!!!!!!')) {
+            if (0 === strpos($key, '!!!!!!')) {
                 $key  = substr($key, 6);
                 $must = true;
             }
