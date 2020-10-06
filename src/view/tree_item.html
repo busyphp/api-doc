@@ -6,7 +6,7 @@
     <tr class="level-{$level}" data-tt-id="{$ttId}" data-tt-parent-id="{$tt_id}">
         <td class="table-nowrap">{$vo.key}</td>
         <td class="text-center table-nowrap">{$vo.type}</td>
-        <td><?=\BusyPHP\apidoc\ApiDoc::renderSpan($vo['data']['title']);?></td>
+        <td><?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($vo['data']['title']);?></td>
     </tr>
     <notempty name="vo.data.structure">
         <?=\BusyPHP\apidoc\ApiDoc::renderTree($vo['data']['structure'], $level + 1, $ttId);?>

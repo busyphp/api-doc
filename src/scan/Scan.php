@@ -2,6 +2,17 @@
 
 namespace BusyPHP\apidoc\scan;
 
+use BusyPHP\apidoc\structures\ApiItem;
+use BusyPHP\apidoc\structures\ApiList;
+use BusyPHP\apidoc\structures\DataStructure;
+use BusyPHP\apidoc\structures\GroupItem;
+use BusyPHP\apidoc\structures\GroupList;
+use BusyPHP\apidoc\structures\ParamList;
+use BusyPHP\apidoc\structures\ParamItem;
+use BusyPHP\apidoc\structures\ParamOptionItem;
+use BusyPHP\apidoc\structures\ParamOptionList;
+use BusyPHP\apidoc\structures\ReturnItem;
+use BusyPHP\apidoc\structures\ReturnList;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -67,17 +78,18 @@ class Scan
     
     /**
      * 执行解析
-     * @return array
+     * @return GroupList
      */
     public function parse()
     {
-        $list = [];
+        $list = GroupList::make();
         foreach ($this->classList as $class) {
             $item = $this->parseClass($class);
             if (!$item) {
                 continue;
             }
-            $list[] = $item;
+            
+            $list->push($item);
         }
         
         return $list;
@@ -87,28 +99,30 @@ class Scan
     /**
      * 解析类
      * @param $class
-     * @return array|bool
+     * @return GroupItem|false
      */
     protected function parseClass($class)
     {
         try {
             $reflectionClass = new ReflectionClass($class);
-            $list            = [];
+            $list            = ApiList::make();
             foreach ($reflectionClass->getMethods() as $method) {
                 $item = $this->parseMethod($method);
                 if (!$item) {
                     continue;
                 }
-                $list[] = $item;
+                $list->push($item);
             }
             
-            if (!$list) {
+            if (!count($list)) {
                 return false;
             }
             
             // 取分组名称
             $title        = '';
+            $desc         = '';
             $classComment = $reflectionClass->getDocComment();
+            $classComment = $this->encode($classComment);
             $classComment = str_replace('/**', '', $classComment);
             $classComment = str_replace('*/', '', $classComment);
             $classComment = str_replace('*', '', $classComment);
@@ -118,18 +132,28 @@ class Scan
                 if (preg_match('/(.*?)@.*/s', $classComment, $match)) {
                     $title = trim($match[1]);
                 }
+                $comments = explode('@', $classComment);
+                foreach ($comments as $item) {
+                    $item = trim($item);
+                    if (0 === stripos($item, 'desc ')) {
+                        $desc = $this->decode($item);
+                    }
+                }
             }
             
+            $desc           = trim(substr($desc, 5));
             $controllerName = $this->parseControllerName($reflectionClass->getShortName(), $reflectionClass->getName());
             
-            return [
-                'title'   => $title,
-                'module'  => $controllerName,
-                'id'      => $controllerName,
-                'class'   => $reflectionClass->getName(),
-                'list'    => $list,
-                'comment' => $reflectionClass->getDocComment()
-            ];
+            $item          = new GroupItem();
+            $item->title   = $title;
+            $item->module  = $controllerName;
+            $item->id      = $controllerName;
+            $item->class   = $reflectionClass->getName();
+            $item->list    = $list;
+            $item->comment = $reflectionClass->getDocComment();
+            $item->desc    = $desc;
+            
+            return $item;
         } catch (ReflectionException $e) {
             return false;
         }
@@ -139,7 +163,7 @@ class Scan
     /**
      * 解析方法
      * @param ReflectionMethod $method
-     * @return array|false
+     * @return ApiItem|false
      */
     protected function parseMethod(ReflectionMethod $method)
     {
@@ -155,6 +179,7 @@ class Scan
         }
         
         // 移除注释符号
+        $comment = $this->encode($comment);
         $comment = preg_replace('/\*(\w+)/', '!!!!!!\\1', $comment); // 必填替换
         $comment = str_replace('/**', '', $comment);
         $comment = str_replace('*/', '', $comment);
@@ -177,16 +202,19 @@ class Scan
         $return  = '';
         $type    = '';
         $example = '';
+        $desc    = '';
         foreach ($list as $item) {
             $item = trim($item);
             if (0 === stripos($item, 'return ')) {
-                $return = $item;
+                $return = $this->decode($item);
             } elseif (0 === stripos($item, 'param ')) {
-                $params[] = trim($item);
+                $params[] = $this->decode($item);
             } elseif (0 === stripos($item, 'api ')) {
                 $type = $item;
             } elseif (0 === stripos($item, 'example ')) {
-                $example = $item;
+                $example = $this->decode($item);
+            } elseif (0 === stripos($item, 'desc ')) {
+                $desc = $this->decode($item);
             }
         }
         
@@ -196,22 +224,32 @@ class Scan
         
         // 输出示例
         $example        = trim(substr($example, 8));
-        $controllerName = $this->parseControllerName($method->getDeclaringClass()->getShortName(), $method->getDeclaringClass());
+        $desc           = trim(substr($desc, 5));
+        $controllerName = $this->parseControllerName($method->getDeclaringClass()
+            ->getShortName(), $method->getDeclaringClass());
         $methodName     = $this->parseMethodName($method->getName(), $method->getDeclaringClass());
         
-        return [
-            'title'   => $title,
-            'path'    => $controllerName . '/' . $methodName,
-            'id'      => $controllerName . '_' . $methodName,
-            'type'    => strtoupper($type),
-            'params'  => $this->parseParams($params),
-            'return'  => $this->parseStructure(substr($return, 7)),
-            'example' => $example,
-            'comment' => $comment
-        ];
+        $item          = new ApiItem();
+        $item->title   = $title;
+        $item->path    = $controllerName . '/' . $methodName;
+        $item->id      = $controllerName . '_' . $methodName;
+        $item->type    = strtoupper($type);
+        $item->params  = $this->parseParamList($params);
+        $item->return  = $this->parseDataStructure(substr($return, 7));
+        $item->example = $example;
+        $item->comment = $comment;
+        $item->desc    = $desc;
+        
+        return $item;
     }
     
     
+    /**
+     * 解析类名
+     * @param $name
+     * @param $class
+     * @return string
+     */
     protected function parseControllerName($name, $class)
     {
         if (!$this->controllerSuffix) {
@@ -226,6 +264,12 @@ class Scan
     }
     
     
+    /**
+     * 解析请求方法名
+     * @param $name
+     * @param $class
+     * @return string
+     */
     protected function parseMethodName($name, $class)
     {
         if (!$this->methodSuffix) {
@@ -243,11 +287,11 @@ class Scan
     /**
      * 解析请求参数
      * @param $params
-     * @return array
+     * @return ParamList
      */
-    protected function parseParams($params)
+    protected function parseParamList($params)
     {
-        $list = [];
+        $list = ParamList::make();
         foreach ($params as $item) {
             $item = substr(trim($item), 6);
             if (!preg_match('/(.*?)\s+(.*?)\s+(.*)/s', $item, $match)) {
@@ -261,12 +305,7 @@ class Scan
                 $must = true;
             }
             
-            $list[] = [
-                'key'  => $key,
-                'must' => $must,
-                'type' => strtolower(trim($match[1])),
-                'data' => $this->parseStructure($match[3], 1, false)
-            ];
+            $list->push(new ParamItem($key, strtolower(trim($match[1])), $must, $this->parseDataStructure($match[3], 1, false)));
         }
         
         return $list;
@@ -278,9 +317,9 @@ class Scan
      * @param string $content
      * @param int    $level
      * @param bool   $hasType
-     * @return array
+     * @return DataStructure
      */
-    protected function parseStructure($content, $level = 1, $hasType = true)
+    protected function parseDataStructure($content, $level = 1, $hasType = true)
     {
         if (preg_match('/(.*?)\[(.*]?)]/s', $content, $match)) {
             $returnType      = $match[1];
@@ -293,23 +332,25 @@ class Scan
         $returnType      = trim($returnType);
         $returnStructure = trim($returnStructure);
         
-        return [
-            'title'     => $returnType,
-            'structure' => $hasType ? $this->parseStructureItems($returnStructure, $level) : $this->parseParamStructureItems($returnStructure, $level)
-        ];
+        return new DataStructure($returnType, $hasType ? $this->parseReturnList($returnStructure, $level) : $this->parseParamOptionList($returnStructure, $level));
     }
     
     
-    protected function parseParamStructureItems($content, $level)
+    /**
+     * 解析请求参数选项
+     * @param $content
+     * @param $level
+     * @return ParamOptionList
+     */
+    protected function parseParamOptionList($content, $level)
     {
+        $list = ParamOptionList::make();
         if ($level > 2) {
-            return [];
+            return $list;
         }
         
         $content = explode("*{$level}", $content);
         $content = $content ?? [];
-        
-        $list = [];
         foreach ($content as $item) {
             $item = trim($item);
             if (!$item) {
@@ -323,18 +364,12 @@ class Scan
             $key  = trim($match[1]);
             $desc = trim($match[2]);
             if (false !== strpos($desc, '[')) {
-                $data = $this->parseStructure($desc, $level + 1);
+                $data = $this->parseDataStructure($desc, $level + 1);
             } else {
-                $data = [
-                    'title'     => $desc,
-                    'structure' => []
-                ];
+                $data = new DataStructure($desc);
             }
             
-            $list[] = [
-                'key'  => $key,
-                'data' => $data
-            ];
+            $list->push(new ParamOptionItem($key, $data));
         }
         
         return $list;
@@ -342,21 +377,21 @@ class Scan
     
     
     /**
-     * 解析结构items
+     * 解析返回参数集合
      * @param string $content
      * @param int    $level
-     * @return array
+     * @return ReturnList
      */
-    protected function parseStructureItems($content, $level)
+    protected function parseReturnList($content, $level)
     {
+        $list = ReturnList::make();
         if ($level > 5) {
-            return [];
+            return $list;
         }
         
         $content = explode("*{$level}", $content);
         $content = $content ?? [];
         
-        $list = [];
         foreach ($content as $item) {
             $item = trim($item);
             if (!$item) {
@@ -371,19 +406,12 @@ class Scan
             $type = strtolower(trim($match[2]));
             $desc = trim($match[3]);
             if (in_array($type, ['object', 'array'])) {
-                $data = $this->parseStructure($desc, $level + 1);
+                $data = $this->parseDataStructure($desc, $level + 1);
             } else {
-                $data = [
-                    'title'     => $desc,
-                    'structure' => []
-                ];
+                $data = new DataStructure($desc);
             }
             
-            $list[] = [
-                'key'  => $key,
-                'type' => $type,
-                'data' => $data
-            ];
+            $list->push(new ReturnItem($key, $type, $data));
         }
         
         return $list;
@@ -421,5 +449,25 @@ class Scan
         }
         
         return $class;
+    }
+    
+    
+    protected function encode($content)
+    {
+        $content = str_replace('\*', '!!!x!!!', $content);
+        $content = str_replace('\#', '!!!j!!!', $content);
+        $content = str_replace('\@', '!!!a!!!', $content);
+        
+        return $content;
+    }
+    
+    
+    protected function decode($content)
+    {
+        $content = str_replace('!!!x!!!', '*', $content);
+        $content = str_replace('!!!j!!!', '#', $content);
+        $content = str_replace('!!!a!!!', '@', $content);
+        
+        return $content;
     }
 }

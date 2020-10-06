@@ -3,7 +3,9 @@
 namespace BusyPHP\apidoc;
 
 use BusyPHP\apidoc\scan\Scan;
+use BusyPHP\apidoc\structures\InfoStructure;
 use Exception;
+use Parsedown;
 use think\Response;
 use think\View;
 
@@ -16,14 +18,22 @@ use think\View;
 class ApiDoc
 {
     /**
+     * 接口扫描器
      * @var Scan
      */
     protected $scan;
     
     /**
+     * 接口数据
      * @var array
      */
     protected $moduleList = [];
+    
+    /**
+     * 页面数据
+     * @var InfoStructure
+     */
+    protected $info;
     
     
     /**
@@ -44,6 +54,7 @@ class ApiDoc
         }
         
         $this->scan = new Scan($fileList);
+        $this->info = new InfoStructure();
     }
     
     
@@ -54,6 +65,16 @@ class ApiDoc
     public function getScan() : Scan
     {
         return $this->scan;
+    }
+    
+    
+    /**
+     * 获取信息
+     * @return InfoStructure
+     */
+    public function getInfo() : InfoStructure
+    {
+        return $this->info;
     }
     
     
@@ -72,25 +93,27 @@ class ApiDoc
     
     
     /**
-     * @return string
-     * @todo 渲染成MarkDown
-     */
-    public function renderToMarkDown()
-    {
-    }
-    
-    
-    /**
      * 渲染成HTML
      * @param string $pageTitle
      * @return View
      */
     public function renderToHTML($pageTitle = 'API接口文档')
     {
+        $pageTitle = $this->info->title ?: $pageTitle;
+    
+        if (!$this->info->releaseRootUrl) {
+            $this->info->releaseRootUrl = $this->info->debugRootUrl;
+        }
+        if (!$this->info->debugRootUrl) {
+            $this->info->debugRootUrl = $this->info->releaseRootUrl;
+        }
+        
         /** @var View $view */
         $view = Response::create(__DIR__ . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'template.html', 'view', 200);
         $view->assign('list', $this->getModuleList());
         $view->assign('page_title', $pageTitle);
+        $view->assign('print', request()->get('print') > 0);
+        $view->assign('info', $this->info);
         
         return $view;
     }
@@ -115,9 +138,10 @@ class ApiDoc
      * @param $data
      * @return mixed
      */
-    public static function renderSpan($data)
+    public static function parseToMarkdownHtml($data)
     {
         $data = preg_replace('/`(.*?)`/', '<span class="badge badge-pill badge-dark">\\1</span>', $data);
+        $data = Parsedown::instance()->line($data);
         
         return $data;
     }

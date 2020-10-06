@@ -6,9 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{$page_title} - BusyPHP ApiDoc V1.0</title>
     <css href="//cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"/>
+    <css href="//cdn.bootcdn.net/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
     <css href="//cdn.bootcdn.net/ajax/libs/jquery-treetable/3.2.0/css/jquery.treetable.min.css"/>
     <css href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.min.css"/>
     <css href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/styles/shThemeRDark.css"/>
+    <css href="//cdn.bootcdn.net/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css"/>
     <js href="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"/>
     <js href="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"/>
     <js href="//cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"/>
@@ -18,10 +20,32 @@
     <style>
         html::-webkit-scrollbar { background-color: #EEE; width: 8px; border-left: 1px #04386D solid; border-right: 1px #04386D solid;}
         html::-webkit-scrollbar-thumb { background-color: #04386D;}
-        header { background-color: #1262B7; border-bottom: 4px #04386D solid; height: 80px; position: fixed; left: 0; right: 0; top: 0; z-index: 9999;}
-        header h1 { padding: 0 25px; margin: 0; line-height: 76px; font-size: 32px; color: #FFF;}
-        footer { background-color: #F3F3F3; border-top: 4px #04386D solid; height: 50px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999;}
-        footer {line-height: 50px; color: #999; font-size: 12px;}
+        /**/
+        /**/
+        /* table */
+        .table { margin: 0;}
+        .table th, table td { padding: 8px !important; font-size: 14px !important;}
+        .table thead.thead-light th { border-bottom-width: 0;}
+        .table .table-nowrap { white-space: nowrap !important;}
+        .table-responsive { margin-bottom: 1rem;}
+        .table-responsive .table { min-width: 767px !important;}
+        /**/
+        /**/
+        /* syntaxhighlighter */
+        .syntaxhighlighter { padding: 15px 0; border-radius: 5px; margin-top: 0 !important;}
+        /**/
+        /**/
+        /* header */
+        .api-doc-header { background-color: #1262B7; border-bottom: 4px #04386D solid; height: 80px; position: fixed; left: 0; right: 0; top: 0; z-index: 9999;}
+        .api-doc-header .navbar { padding: 1.11rem 1rem; background-color: #1262B7;}
+        /**/
+        /**/
+        /* footer */
+        .api-doc-footer { background-color: #F3F3F3; border-top: 4px #04386D solid; height: 50px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999;}
+        .api-doc-footer {line-height: 50px; color: #999; font-size: 12px;}
+        /**/
+        /**/
+        /* nav */
         .api-doc-wrap {}
         .api-doc-nav { width: 300px; position: fixed; left: 0; top: 80px; bottom: 50px; overflow-y: auto; overflow-x: hidden; border-right: 1px #04386D solid;}
         .api-doc-nav::-webkit-scrollbar { background-color: #EEE; width: 4px; border-left: 1px #04386D solid;}
@@ -31,50 +55,241 @@
         .api-doc-nav .nav-pills > a.active { background-color: #1262B7; border-color: #1262B7}
         .api-doc-nav .nav-pills .nav-pills > a { background-color: #FFF; border-bottom-color: #eee; border-top: 0; padding-left: 2rem}
         .api-doc-nav .nav-pills .nav-pills > a:last-child { border-bottom: 0;}
-        .api-doc-nav .nav-pills:last-child .nav-pills > a:last-child { border-bottom: 1px #eee solid;}
+        .api-doc-nav > .nav-pills { border-bottom: 1px #eee solid;}
         .api-doc-nav .nav-pills .nav-pills > a.active { color: #1262B7; background-color: transparent;}
+        .api-doc-nav .nav-big { border-bottom: 0 !important;}
+        /**/
+        /**/
+        /* content */
         .api-doc-content { padding-left: 300px; padding-top: 95px; padding-bottom: 50px;}
-        .api-doc-content h1 { padding: 0 0 15px 0; margin: 0 0 20px 0; border-bottom: 1px #eee solid; }
-        .api-doc-content h2 { padding: 10px 15px; margin: 0 -15px 20px -15px; background-color: #1262B7; font-size: 28px; color: #FFF;}
-        .api-doc-content h4 { padding: 10px 15px; margin: 30px 0; background-color: #F3F3F3; border-radius: 5px; font-size: 22px;}
-        .api-doc-content .code { line-height: 1em;}
-        .table-responsive { margin-bottom: 1rem;}
-        .api-return-table tr.collapsed span.indenter a {
+        .api-doc-title { padding: 0 0 15px 0; margin: 0 0 20px 0; border-bottom: 1px #eee solid; font-size: 2.2rem;}
+        .api-doc-module-title { padding: 10px 15px; margin: 0 -15px 20px -15px; background-color: #1262B7; color: #FFF; font-size: 1.7rem;}
+        .api-doc-api-title { padding: 10px 15px; margin: 20px 0; background-color: #F3F3F3; border-radius: 5px; font-size: 1.5rem;}
+        /**/
+        /**/
+        /* return table */
+        .api-doc-return-table tr.collapsed span.indenter a {
             background-image: url(data:image/png;base64,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);
         }
-        .api-return-table tr.expanded span.indenter a {
+        .api-doc-return-table tr.expanded span.indenter a {
             background-image: url(data:image/png;base64,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);
         }
-        .api-return-table tr.branch.collapsed { background-color: #cce5ff; }
-        .api-return-table tr.branch.expanded { background-color: #b8daff; }
-        .table { margin: 0;}
-        .table th, table td { padding: 8px !important; font-size: 14px !important;}
-        .table thead.thead-light th { border-bottom-width: 0;}
-        .table .table-nowrap { white-space: nowrap !important;}
-        .table-responsive .table { min-width: 767px !important;}
-        .syntaxhighlighter { padding: 15px 0; border-radius: 5px; margin-top: 0 !important;}
+        .api-doc-return-table tr.branch.collapsed { background-color: #cce5ff; }
+        .api-doc-return-table tr.branch.expanded { background-color: #b8daff; }
+        /**/
+        /**/
+        /* markdown */
+        .api-doc-markdown { margin-bottom: 20px;}
+        /**/
+        /**/
+        /* 响应 */
+        @media (max-width: 767px) {
+            html { font-size: 12px;}
+            .api-doc-content { padding-left: 0; padding-top: 75px;}
+            .api-doc-nav { z-index: 9999; top: 60px; width: 200px; display: none;}
+            .api-doc-header { height: 60px;}
+        }
+        /**/
+        /**/
+        /* 打印 */
+        @media print {
+            *{ color: #000 !important }
+            .api-doc-nav { position: static;}
+            .api-doc-content { padding-left: 0;}
+            code { font-weight: bold!important;}
+        }
     </style>
 </head>
 <body>
-<header>
-    <h1>{$page_title}</h1>
+<header class="api-doc-header">
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <a class="navbar-brand" href="#">{$page_title}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    </nav>
 </header>
-<footer>
+<footer class="api-doc-footer">
     <div class="text-center">
         <span>© 2019-2020 <a href="//www.harter.cn">BusyPHP ApiDOC</a> POWERED BY 山西函拓科技有限公司</span>
     </div>
 </footer>
 <div class="api-doc-wrap">
+    <div class="api-doc-nav bg-light">
+        <nav class="navbar navbar-light bg-light" id="api_doc_nav">
+            <nav class="nav nav-pills flex-column">
+                <a class="nav-link nav-big" href="#api_doc_root">目录</a>
+                <a class="nav-link" href="#api_doc_global">文档规范</a>
+                <nav class="nav nav-pills flex-column">
+                    <a class="nav-link" href="#api_doc_global_root_url">接口入口</a>
+                    <a class="nav-link" href="#api_doc_global_headers">公共请求头</a>
+                    <a class="nav-link" href="#api_doc_global_params">公共请求参数</a>
+                    <a class="nav-link" href="#api_doc_global_returns">公共响应结构</a>
+                </nav>
+                <foreach name="list" item="vo">
+                    <a class="nav-link" href="#{$vo.id}">{$vo.title}</a>
+                    <nav class="nav nav-pills flex-column">
+                        <foreach name="vo.list" item="item">
+                            <a class="nav-link" href="#{$item.id}">{$item.title}</a>
+                        </foreach>
+                    </nav>
+                </foreach>
+                <a class="nav-link" href="#api_doc_appendix">附录</a>
+                <nav class="nav nav-pills flex-column">
+                    <a class="nav-link" href="#api_doc_global_errorCode">错误代码</a>
+                    <foreach name="info.appendixList" item="vo" key="index">
+                        <a class="nav-link" href="#api_doc_appendix_{$vo.id}_{$index}">{$vo.name}</a>
+                    </foreach>
+                </nav>
+            </nav>
+        </nav>
+    </div>
     <div class="api-doc-content" data-spy="scroll">
         <div class="col-12">
-            <h1>{$page_title}</h1>
-            <foreach name="list" item="vo">
-                <h2 id="{$vo.module}">{$vo.title}</h2>
+            <h1 class="api-doc-title" id="api_doc_root">{$page_title}</h1>
 
+            <div class="api-doc-markdown markdown-body">
+                <?=Parsedown::instance()->parse($info['description']);?>
+            </div>
+
+            <h2 class="api-doc-module-title" id="api_doc_global">文档规范</h2>
+            <h4 class="api-doc-api-title" id="api_doc_global_root_url"><a href="#api_doc_global_root_url"># 接口入口</a>
+            </h4>
+            <div class="api-doc-markdown markdown-body">
+                <?=Parsedown::instance()
+                    ->parse('> 测试环境：`' . $info['debugRootUrl'] . '`<br />正式环境：`' . $info['releaseRootUrl'] . '`');?>
+            </div>
+            <h4 class="api-doc-api-title" id="api_doc_global_headers"><a href="#api_doc_global_headers"># 公共请求头</a></h4>
+            <div class="api-doc-markdown markdown-body">
+                <?=Parsedown::instance()->parse('> 每一个`HTTP`请求中必须携带的 `Request Headers`');?>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-light">
+                    <tr class="text-center">
+                        <th width="300">参数</th>
+                        <th width="150">必传</th>
+                        <th>说明</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <empty name="info.headerList">
+                        <tr>
+                            <td colspan="3" class="text-center">无公共请求头</td>
+                        </tr>
+                        <else/>
+                        <foreach name="info.headerList" item="vo">
+                            <tr>
+                                <td class="text-center table-nowrap">{$vo.key}</td>
+                                <td class="text-center">
+                                    <eq name="vo.must" value="1">
+                                        <span class="badge badge-pill badge-success">是</span>
+                                        <else/>
+                                        <span class="badge badge-pill badge-secondary">否</span>
+                                    </eq>
+                                </td>
+                                <td class="text-left">
+                                    <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($vo['desc']);?>
+                                </td>
+                            </tr>
+                        </foreach>
+                    </empty>
+                    </tbody>
+                </table>
+            </div>
+            <h4 class="api-doc-api-title" id="api_doc_global_params"><a href="#api_doc_global_params"># 公共请求参数</a></h4>
+            <div class="api-doc-markdown markdown-body">
+                <?=Parsedown::instance()->parse('> 在每一个`HTTP`请求中，无论使用`get`还是`post`请求必须携带的参数，如：用户通行密钥、定位坐标等。');?>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-light">
+                    <tr class="text-center">
+                        <th width="150">参数</th>
+                        <th width="150">类型</th>
+                        <th width="150">必传</th>
+                        <th>说明</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <empty name="info.paramList">
+                        <tr>
+                            <td colspan="4" class="text-center">无公共请求参数</td>
+                        </tr>
+                        <else/>
+                        <foreach name="info.paramList" item="param">
+                            <tr>
+                                <td class="text-center table-nowrap">{$param.key}</td>
+                                <td class="text-center table-nowrap">{$param.type}</td>
+                                <td class="text-center">
+                                    <eq name="param.must" value="1">
+                                        <span class="badge badge-pill badge-success">是</span>
+                                        <else/>
+                                        <span class="badge badge-pill badge-secondary">否</span>
+                                    </eq>
+                                </td>
+                                <td class="text-left">
+                                    <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($param['data']['title']);?>
+                                    <notempty name="param.data.structure">
+                                        <foreach name="param.data.structure" item="structure">
+                                            <div>
+                                                <span class="badge badge-pill badge-dark">{$structure.key}</span> <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($structure['data']['title']);?>
+                                            </div>
+                                        </foreach>
+                                    </notempty>
+                                </td>
+                            </tr>
+                        </foreach>
+                    </empty>
+                    </tbody>
+                </table>
+            </div>
+            <h4 class="api-doc-api-title" id="api_doc_global_returns"><a href="#api_doc_global_returns"># 公共响应结构</a>
+            </h4>
+            <div class="api-doc-markdown markdown-body">
+                <?=Parsedown::instance()->parse('> 接口返回的基本参数结构，每一个接口都会返回如下基本结构。**注意：在对应的接口返回结构中不在重复声明**。');?>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered api-doc-return-table">
+                    <thead class="thead-light">
+                    <tr class="text-center">
+                        <th width="300">参数</th>
+                        <th width="150">类型</th>
+                        <th>说明</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <empty name="info.returnList">
+                        <tr>
+                            <td colspan="3" class="text-center">无公共响应结构</td>
+                        </tr>
+                        <else/>
+                        <?=\BusyPHP\apidoc\ApiDoc::renderTree($info['returnList']);?>
+                    </empty>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <foreach name="list" item="vo">
+                <h2 class="api-doc-module-title" id="{$vo.module}">{$vo.title}</h2>
+                <notempty name="vo.desc">
+                    <div class="api-doc-markdown markdown-body">
+                        <?=Parsedown::instance()->parse($vo['desc']);?>
+                    </div>
+                </notempty>
+                
                 <foreach name="vo.list" item="item">
-                    <h4 id="{$item.id}">
+                    <h4 class="api-doc-api-title" id="{$item.id}">
                         <a href="#{$item.id}"># {$item.title}</a>
                     </h4>
+                    <notempty name="item.desc">
+                        <div class="api-doc-markdown markdown-body">
+                            <?=Parsedown::instance()->parse($item['desc']);?>
+                        </div>
+                    </notempty>
                     <h5>请求说明</h5>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered">
@@ -112,11 +327,11 @@
                                             </eq>
                                         </td>
                                         <td class="text-left">
-                                            <?=\BusyPHP\apidoc\ApiDoc::renderSpan($param['data']['title']);?>
+                                            <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($param['data']['title']);?>
                                             <notempty name="param.data.structure">
                                                 <foreach name="param.data.structure" item="structure">
                                                     <div>
-                                                        <span class="badge badge-pill badge-dark">{$structure.key}</span> <?=\BusyPHP\apidoc\ApiDoc::renderSpan($structure['data']['title']);?>
+                                                        <span class="badge badge-pill badge-dark">{$structure.key}</span> <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($structure['data']['title']);?>
                                                     </div>
                                                 </foreach>
                                             </notempty>
@@ -131,7 +346,7 @@
                     <h5>输出说明</h5>
 
                     <div class="table-responsive">
-                        <table class="table table-striped table-bordered api-return-table">
+                        <table class="table table-striped table-bordered api-doc-return-table">
                             <thead class="thead-light">
                             <tr>
                                 <th class="text-center table-nowrap">输出格式</th>
@@ -160,21 +375,50 @@
                     <pre class="brush:js;" data-type="json">{$item.example|default="无输出示例"}</pre>
                 </foreach>
             </foreach>
-        </div>
-    </div>
-    <div class="api-doc-nav bg-light">
-        <nav class="navbar navbar-light bg-light" id="api_doc_nav">
-            <nav class="nav nav-pills flex-column">
-                <foreach name="list" item="vo">
-                    <a class="nav-link" href="#{$vo.id}">{$vo.title}</a>
-                    <nav class="nav nav-pills flex-column">
-                        <foreach name="vo.list" item="item">
-                            <a class="nav-link" href="#{$item.id}">{$item.title}</a>
+
+            <h2 class="api-doc-module-title" id="api_doc_appendix">附录</h2>
+            <h4 class="api-doc-api-title" id="api_doc_global_errorCode"><a href="#api_doc_global_errorCode"># 错误代码</a>
+            </h4>
+            <div class="api-doc-markdown markdown-body">
+                <?=Parsedown::instance()->parse('> 接口返回的错误代码，如需：需登录、权限不足等，业务中可以根据错误代码进行`页面提示`或`跳转`');?>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-light">
+                    <tr class="text-center">
+                        <th width="150">错误代码</th>
+                        <th width="300">错误说明</th>
+                        <th>解决方案</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <empty name="info.errorCodeList">
+                        <tr>
+                            <td colspan="3" class="text-center">无错误代码</td>
+                        </tr>
+                        <else/>
+                        <foreach name="info.errorCodeList" item="vo">
+                            <tr>
+                                <td class="text-center table-nowrap">{$vo.code}</td>
+                                <td class="text-center table-nowrap">{$vo.name}</td>
+                                <td class="text-left">
+                                    <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($vo['desc']);?>
+                                </td>
+                            </tr>
                         </foreach>
-                    </nav>
-                </foreach>
-            </nav>
-        </nav>
+                    </empty>
+                    </tbody>
+                </table>
+            </div>
+
+            <foreach name="info.appendixList" item="vo" key="index">
+                <h4 class="api-doc-api-title" id="api_doc_appendix_{$vo.id}_{$index}">
+                    <a href="#api_doc_appendix_{$vo.id}_{$index}"># {$vo.name}</a></h4>
+                <div class="api-doc-markdown markdown-body">
+                    <?=Parsedown::instance()->parse($vo['content']);?>
+                </div>
+            </foreach>
+        </div>
     </div>
 </div>
 
@@ -185,8 +429,41 @@
         SyntaxHighlighter.all();
 
         var $body = $('body,html');
-        var offset = 80;
+        var $header = $('.api-doc-header');
+        var offset = $header.outerHeight();
+        var $nav = $('.api-doc-nav');
+        var $navbarToggler = $('.navbar-toggler');
         $body.scrollspy({target : '#api_doc_nav', offset : offset});
+
+        $navbarToggler.on('click', function (e) {
+            e.stopPropagation();
+            
+            if ($nav.css('display') === 'none') {
+                $nav.show();
+            } else {
+                $nav.hide();
+            }
+        });
+
+        $nav.on('click', function (e) {
+            e.stopPropagation();
+        });
+
+        $body.on('click', function () {
+            if ($(window).width() <= 767) {
+                $nav.hide();
+            } else {
+                $nav.show();
+            }
+        });
+        
+        $(window).on('resize', function () {
+            if ($(window).width() <= 767) {
+                $nav.hide();
+            } else {
+                $nav.show();
+            }
+        });
 
 
         $('.nav-link, h4 a').on('click', function () {
@@ -195,13 +472,13 @@
             var pos = $target.offset();
 
             $body.animate({
-                scrollTop : pos.top - offset
+                scrollTop : pos.top - offset + 1
             })
 
             return false;
         });
 
-        $(".api-return-table").treetable({
+        $(".api-doc-return-table").treetable({
             expandable : true
         });
 
@@ -210,8 +487,9 @@
             if (jsonStr.length > 0 && (0 === jsonStr.indexOf('{') || 0 === jsonStr.indexOf('['))) {
                 var json = JSON.parse(jsonStr);
                 $(this).html(JSON.stringify(json, null, 4));
-                SyntaxHighlighter.highlight();
             }
+
+            SyntaxHighlighter.highlight();
         });
 
     });
