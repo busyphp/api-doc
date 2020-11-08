@@ -4,6 +4,7 @@ namespace BusyPHP\apidoc;
 
 use BusyPHP\apidoc\scan\Scan;
 use BusyPHP\apidoc\structures\InfoStructure;
+use BusyPHP\apidoc\test\Test;
 use Exception;
 use Parsedown;
 use think\Response;
@@ -42,6 +43,11 @@ class ApiDoc
      */
     public function __construct(...$files)
     {
+        if (request()->isAjax()) {
+            $test = new Test();
+            $test->exec();
+        }
+        
         $fileList = [];
         foreach ($files as $file) {
             if (is_array($file)) {
@@ -100,7 +106,7 @@ class ApiDoc
     public function renderToHTML($pageTitle = 'API接口文档')
     {
         $pageTitle = $this->info->title ?: $pageTitle;
-    
+        
         if (!$this->info->releaseRootUrl) {
             $this->info->releaseRootUrl = $this->info->debugRootUrl;
         }
@@ -142,6 +148,24 @@ class ApiDoc
     {
         $data = preg_replace('/`(.*?)`/', '<span class="badge badge-pill badge-dark">\\1</span>', $data);
         $data = Parsedown::instance()->line($data);
+        
+        return $data;
+    }
+    
+    
+    /**
+     * 解析无html字符
+     * @param $data
+     * @return string
+     */
+    public static function parseNoHtml($data)
+    {
+        $data = preg_replace('/`(.*?)`/', '\\1', $data);
+        $data = str_replace('"', '′', $data);
+        $data = str_replace('<', '[', $data);
+        $data = str_replace('>', ']', $data);
+        $data = str_replace('\'', '′', $data);
+        $data = str_replace(["\r", "\n", "\t"], ' ', $data);
         
         return $data;
     }

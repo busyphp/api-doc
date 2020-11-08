@@ -5,30 +5,25 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{$page_title} - BusyPHP ApiDoc V1.0</title>
-    <css href="//cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/css/bootstrap.min.css"/>
+    <css href="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"/>
     <css href="//cdn.bootcdn.net/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
     <css href="//cdn.bootcdn.net/ajax/libs/jquery-treetable/3.2.0/css/jquery.treetable.min.css"/>
     <css href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.min.css"/>
-    <css href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/styles/shThemeRDark.css"/>
+    <css href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCoreEmacs.min.css"/>
     <css href="//cdn.bootcdn.net/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css"/>
-    <js href="//cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"/>
-    <js href="//cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"/>
-    <js href="//cdn.jsdelivr.net/npm/bootstrap@4.5.0/dist/js/bootstrap.min.js"/>
-    <js href="//cdn.bootcdn.net/ajax/libs/jquery-treetable/3.2.0/jquery.treetable.min.js"/>
-    <js href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js"/>
-    <js href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushJScript.min.js"/>
+    <css href="//cdn.bootcdn.net/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css"/>
     <style>
-        html::-webkit-scrollbar { background-color: #EEE; width: 8px; border-left: 1px #04386D solid; border-right: 1px #04386D solid;}
-        html::-webkit-scrollbar-thumb { background-color: #04386D;}
-        /**/
-        /**/
         /* table */
         .table { margin: 0;}
-        .table th, table td { padding: 8px !important; font-size: 14px !important;}
+        .table th, table td { padding: 0.7rem !important; }
         .table thead.thead-light th { border-bottom-width: 0;}
         .table .table-nowrap { white-space: nowrap !important;}
-        .table-responsive { margin-bottom: 1rem;}
+        .table .table-vertical-align { vertical-align: middle}
         .table-responsive .table { min-width: 767px !important;}
+        .form-control-file { padding: 0.075rem 0.075rem; }
+        .nav-tabs .nav-item,
+        .nav-tabs .nav-item.active {border-top-left-radius: .25rem;border-top-right-radius: .25rem;padding: .5rem 1rem;border: 1px solid transparent;}
+        .nav-tabs .nav-item.active {border-color: #dee2e6 #dee2e6 #fff; background-color: #fff; color: #495057;}
         /**/
         /**/
         /* syntaxhighlighter */
@@ -36,35 +31,35 @@
         /**/
         /**/
         /* header */
-        .api-doc-header { background-color: #1262B7; border-bottom: 4px #04386D solid; height: 80px; position: fixed; left: 0; right: 0; top: 0; z-index: 9999;}
-        .api-doc-header .navbar { padding: 1.11rem 1rem; background-color: #1262B7;}
+        .api-doc-header { position: fixed; left: 0; right: 0; top: 0; z-index: 9999; }
+        .api-doc-header .navbar { background-color: #FFF; height: 4.875rem; border-bottom: 1px #E0E0E0 solid; }
+        .api-doc-header .navbar-brand { font-size: 2.2rem;}
         /**/
         /**/
         /* footer */
-        .api-doc-footer { background-color: #F3F3F3; border-top: 4px #04386D solid; height: 50px; position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999;}
-        .api-doc-footer {line-height: 50px; color: #999; font-size: 12px;}
+        .api-doc-footer { background-color: #FFF; border-top: 1px #E0E0E0 solid; height: 3.125rem; position: fixed; left: 0; right: 0; bottom: 0; z-index: 9999; line-height: 3.125rem; color: #999; font-size: 0.6rem;}
         /**/
         /**/
         /* nav */
         .api-doc-wrap {}
-        .api-doc-nav { width: 300px; position: fixed; left: 0; top: 80px; bottom: 50px; overflow-y: auto; overflow-x: hidden; border-right: 1px #04386D solid;}
-        .api-doc-nav::-webkit-scrollbar { background-color: #EEE; width: 4px; border-left: 1px #04386D solid;}
-        .api-doc-nav::-webkit-scrollbar-thumb { background-color: #04386D;}
+        .api-doc-nav { width: 18.75rem; position: fixed; left: 0; top: 4.875rem; bottom: 3.125rem; overflow-y: auto; overflow-x: hidden; border-right: 1px #E0E0E0 solid}
+        .api-doc-nav::-webkit-scrollbar { background-color: #F3F3F3; width: 0.25rem;}
+        .api-doc-nav::-webkit-scrollbar-thumb { background-color: #EEE; border-radius: 0.25rem;}
         .api-doc-nav nav { padding: 0; flex-grow: 1;}
-        .api-doc-nav .nav-pills > a { border-bottom: 1px #DDD solid; color: #454545; background-color: #EEE; font-size: 14px; border-radius: 0; border-top: 1px #DDD solid;}
-        .api-doc-nav .nav-pills > a.active { background-color: #1262B7; border-color: #1262B7}
-        .api-doc-nav .nav-pills .nav-pills > a { background-color: #FFF; border-bottom-color: #eee; border-top: 0; padding-left: 2rem}
+        .api-doc-nav .nav-pills > a { border-bottom: 1px #EEE solid; color: #454545; border-radius: 0; border-top: 1px #EEE solid; font-weight: bold; border-left: 0.25rem transparent solid; padding-left: 0.875rem}
+        .api-doc-nav .nav-pills > a.active { background-color: transparent; color: #007bff; border-left-color: #007bff; }
+        .api-doc-nav .nav-pills .nav-pills > a { background-color: #FFF; border-bottom-color: #EEE; border-top: 0; padding-left: 2rem; font-size: 0.875rem; font-weight: normal;}
         .api-doc-nav .nav-pills .nav-pills > a:last-child { border-bottom: 0;}
-        .api-doc-nav > .nav-pills { border-bottom: 1px #eee solid;}
-        .api-doc-nav .nav-pills .nav-pills > a.active { color: #1262B7; background-color: transparent;}
-        .api-doc-nav .nav-big { border-bottom: 0 !important;}
+        .api-doc-nav > .nav-pills { border-bottom: 1px #EEE solid;}
+        .api-doc-nav .nav-pills .nav-pills > a.active { color: #007bff; background-color: transparent; border-left-color: transparent;}
+        .api-doc-nav .nav-big { border-bottom: 0 !important; border-top: 0 !important;}
         /**/
         /**/
         /* content */
-        .api-doc-content { padding-left: 300px; padding-top: 95px; padding-bottom: 50px;}
-        .api-doc-title { padding: 0 0 15px 0; margin: 0 0 20px 0; border-bottom: 1px #eee solid; font-size: 2.2rem;}
-        .api-doc-module-title { padding: 10px 15px; margin: 0 -15px 20px -15px; background-color: #1262B7; color: #FFF; font-size: 1.7rem;}
-        .api-doc-api-title { padding: 10px 15px; margin: 20px 0; background-color: #F3F3F3; border-radius: 5px; font-size: 1.5rem;}
+        .api-doc-content { padding: 4.875rem 0.9375rem 3.125rem 19.6875rem;}
+        .api-doc-title { }
+        .api-doc-module-title { }
+        .api-doc-api-title { }
         /**/
         /**/
         /* return table */
@@ -79,103 +74,146 @@
         /**/
         /**/
         /* markdown */
-        .api-doc-markdown { margin-bottom: 20px;}
+        .api-doc-markdown {}
+        code { font-size: 0.8rem; color: #e96900; background-color: #f8f8f8; font-family: 'Roboto Mono', Monaco, courier, monospace; margin: 0 2px !important; white-space: pre-wrap;}
+        /**/
+        /**/
+        /*test*/
+        .api-doc-test-result { border-radius: .25rem; background-color: #f8f8f8; padding: 1rem;}
+        .api-doc-test-result:empty { }
+        .api-doc-test-result:empty:before { content: " 请测试后查看输出结果 "; display: block; padding: 2rem 0; text-align: center; color: #999; font-size: 0.9rem;}
+
+        /**/
+        .api-doc-xml-view {}
+        .api-doc-xml-view .code-string {color: #666666;}
+        .api-doc-xml-view .code-number {color: #bb0404; font-weight: bold;}
+        .api-doc-xml-view .code-boolean {color: #000033; font-weight: bold;}
+        .api-doc-xml-view .code-null {color: magenta;}
+        .api-doc-xml-view .code-key {color: #003377; font-weight: bold;}
+        .api-doc-json-view { }
         /**/
         /**/
         /* 响应 */
         @media (max-width: 767px) {
-            html { font-size: 12px;}
-            .api-doc-content { padding-left: 0; padding-top: 75px;}
-            .api-doc-nav { z-index: 9999; top: 60px; width: 200px; display: none;}
-            .api-doc-header { height: 60px;}
-        }
-        /**/
-        /**/
-        /* 打印 */
-        @media print {
-            *{ color: #000 !important }
-            .api-doc-nav { position: static;}
-            .api-doc-content { padding-left: 0;}
-            code { font-weight: bold!important;}
+            html, body { font-size: 14px;}
+            .table-responsive { border: 1px #dee2e6 solid;}
+            .table-responsive .table { border: 0; margin-bottom: -1px; position: relative;}
+            .table-responsive .table thead tr:first-child td,
+            .table-responsive .table thead tr:first-child th { border-top: 0;}
+            .table-responsive .table th:first-child,
+            .table-responsive .table td:first-child { border-left: 0;}
+            .table-responsive .table th:last-child,
+            .table-responsive .table td:last-child { border-right: 0;}
+
+            .api-doc-content { padding-left: 0; padding-right: 0;}
+            .api-doc-nav { z-index: 9999; display: none;}
         }
     </style>
 </head>
 <body>
 <header class="api-doc-header">
-    <nav class="navbar navbar-expand-lg navbar-dark">
-        <a class="navbar-brand" href="#">{$page_title}</a>
+    <nav class="navbar navbar-light navbar-expand-md">
+        <a class="navbar-brand mb-0 h1" href="#">{$page_title}</a>
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        <!--
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto"></ul>
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="搜索文档" />
+            </form>
+        </div>
+        -->
     </nav>
 </header>
 <footer class="api-doc-footer">
     <div class="text-center">
-        <span>© 2019-2020 <a href="//www.harter.cn">BusyPHP ApiDOC</a> POWERED BY 山西函拓科技有限公司</span>
+        <span>© 2019-{:date('Y')} <a href="//www.harter.cn">BusyPHP ApiDOC</a> POWERED BY 山西函拓科技有限公司</span>
     </div>
 </footer>
 <div class="api-doc-wrap">
     <div class="api-doc-nav bg-light">
         <nav class="navbar navbar-light bg-light" id="api_doc_nav">
             <nav class="nav nav-pills flex-column">
-                <a class="nav-link nav-big" href="#api_doc_root">目录</a>
-                <a class="nav-link" href="#api_doc_global">文档规范</a>
+                <a class="nav-link nav-goto nav-big" href="#api_doc_root">目录</a>
+                <a class="nav-link nav-goto" href="#api_doc_global">文档规范</a>
                 <nav class="nav nav-pills flex-column">
-                    <a class="nav-link" href="#api_doc_global_root_url">接口入口</a>
-                    <a class="nav-link" href="#api_doc_global_headers">公共请求头</a>
-                    <a class="nav-link" href="#api_doc_global_params">公共请求参数</a>
-                    <a class="nav-link" href="#api_doc_global_returns">公共响应结构</a>
+                    <a class="nav-link nav-goto" href="#api_doc_global_root_url">接口入口</a>
+                    <a class="nav-link nav-goto" href="#api_doc_global_headers">公共请求头</a>
+                    <a class="nav-link nav-goto" href="#api_doc_global_params">公共请求参数</a>
+                    <a class="nav-link nav-goto" href="#api_doc_global_returns">公共响应结构</a>
                 </nav>
                 <foreach name="list" item="vo">
-                    <a class="nav-link" href="#{$vo.id}">{$vo.title}</a>
+                    <a class="nav-link nav-goto" href="#{$vo.id}">{$vo.title}</a>
                     <nav class="nav nav-pills flex-column">
                         <foreach name="vo.list" item="item">
-                            <a class="nav-link" href="#{$item.id}">{$item.title}</a>
+                            <a class="nav-link nav-goto" href="#{$item.id}">{$item.title}</a>
                         </foreach>
                     </nav>
                 </foreach>
-                <a class="nav-link" href="#api_doc_appendix">附录</a>
+                <a class="nav-link nav-goto" href="#api_doc_appendix">附录</a>
                 <nav class="nav nav-pills flex-column">
-                    <a class="nav-link" href="#api_doc_global_errorCode">错误代码</a>
+                    <a class="nav-link nav-goto" href="#api_doc_global_errorCode">错误代码</a>
                     <foreach name="info.appendixList" item="vo" key="index">
-                        <a class="nav-link" href="#api_doc_appendix_{$vo.id}_{$index}">{$vo.name}</a>
+                        <a class="nav-link nav-goto" href="#api_doc_appendix_{$vo.id}_{$index}">{$vo.name}</a>
                     </foreach>
                 </nav>
             </nav>
         </nav>
     </div>
-    <div class="api-doc-content" data-spy="scroll">
-        <div class="col-12">
-            <h1 class="api-doc-title" id="api_doc_root">{$page_title}</h1>
 
-            <div class="api-doc-markdown markdown-body">
+    <main class="api-doc-content" data-spy="scroll">
+        <div class="col-12">
+
+            <h1 class="api-doc-title h1 mb-4 mt-4" id="api_doc_root">开始</h1>
+
+            <div class="api-doc-markdown markdown-body mb-4">
                 <?=Parsedown::instance()->parse($info['description']);?>
             </div>
 
-            <h2 class="api-doc-module-title" id="api_doc_global">文档规范</h2>
-            <h4 class="api-doc-api-title" id="api_doc_global_root_url"><a href="#api_doc_global_root_url"># 接口入口</a>
-            </h4>
-            <div class="api-doc-markdown markdown-body">
+            <h2 class="api-doc-module-title h2 mt-5" id="api_doc_global">文档规范</h2>
+
+            <hr class="mb-4"/>
+
+            <h3 class="api-doc-api-title h3 mb-4" id="api_doc_global_root_url">
+                <a class="nav-goto" href="#api_doc_global_root_url"># 接口入口</a>
+            </h3>
+
+            <div class="api-doc-markdown markdown-body mb-4">
                 <?=Parsedown::instance()
-                    ->parse('> 测试环境：`' . $info['debugRootUrl'] . '`<br />正式环境：`' . $info['releaseRootUrl'] . '`');?>
+                    ->parse('> 测试环境：`' . $info['debugRootUrl'] . '` <br />正式环境：`' . $info['releaseRootUrl'] . '`');?>
             </div>
-            <h4 class="api-doc-api-title" id="api_doc_global_headers"><a href="#api_doc_global_headers"># 公共请求头</a></h4>
-            <div class="api-doc-markdown markdown-body">
+            <h3 class="api-doc-api-title h3 mb-4" id="api_doc_global_headers">
+                <a class="nav-goto" href="#api_doc_global_headers"># 公共请求头</a>
+            </h3>
+            <div class="api-doc-markdown markdown-body mb-4">
                 <?=Parsedown::instance()->parse('> 每一个`HTTP`请求中必须携带的 `Request Headers`');?>
             </div>
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
+            <div class="table-responsive mb-4">
+                <table class="table table-striped table-bordered table-hover">
                     <thead class="thead-light">
                     <tr class="text-center">
-                        <th width="300">参数</th>
-                        <th width="150">必传</th>
+                        <th width="150">参数</th>
+                        <th width="80">必传</th>
+                        <th>测试值</th>
                         <th>说明</th>
                     </tr>
                     </thead>
+                    <tfoot>
+                    <tr>
+                        <th colspan="2"></th>
+                        <th colspan="2">
+                            <button class="btn btn-primary btn-sm api-doc-test-save-headers">保存参数</button>
+                        </th>
+                    </tr>
+                    </tfoot>
                     <tbody>
                     <empty name="info.headerList">
                         <tr>
-                            <td colspan="3" class="text-center">无公共请求头</td>
+                            <td colspan="4" class="text-center">无公共请求头</td>
                         </tr>
                         <else/>
                         <foreach name="info.headerList" item="vo">
@@ -188,6 +226,9 @@
                                         <span class="badge badge-pill badge-secondary">否</span>
                                     </eq>
                                 </td>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm api-doc-test-headers" placeholder="<?=\BusyPHP\apidoc\ApiDoc::parseNoHtml($vo['desc'])?>" name="{$vo.key}" <?=$vo['must'] ? 'required' : '';?>/>
+                                </td>
                                 <td class="text-left">
                                     <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($vo['desc']);?>
                                 </td>
@@ -197,25 +238,37 @@
                     </tbody>
                 </table>
             </div>
-            <h4 class="api-doc-api-title" id="api_doc_global_params"><a href="#api_doc_global_params"># 公共请求参数</a></h4>
-            <div class="api-doc-markdown markdown-body">
+            <h3 class="api-doc-api-title h3 mb-4" id="api_doc_global_params">
+                <a class="nav-goto" href="#api_doc_global_params"># 公共请求参数</a>
+            </h3>
+            <div class="api-doc-markdown markdown-body mb-4">
                 <?=Parsedown::instance()->parse('> 在每一个`HTTP`请求中，无论使用`get`还是`post`请求必须携带的参数，如：用户通行密钥、定位坐标等。');?>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
+            <div class="table-responsive mb-4">
+                <table class="table table-striped table-bordered table-hover">
                     <thead class="thead-light">
                     <tr class="text-center">
                         <th width="150">参数</th>
-                        <th width="150">类型</th>
-                        <th width="150">必传</th>
+                        <th width="80">类型</th>
+                        <th width="80">必传</th>
+                        <th>测试值</th>
                         <th>说明</th>
                     </tr>
                     </thead>
+
+                    <tfoot>
+                    <tr>
+                        <th colspan="3"></th>
+                        <th colspan="2">
+                            <button class="btn btn-primary btn-sm api-doc-test-save-globals">保存参数</button>
+                        </th>
+                    </tr>
+                    </tfoot>
                     <tbody>
                     <empty name="info.paramList">
                         <tr>
-                            <td colspan="4" class="text-center">无公共请求参数</td>
+                            <td colspan="5" class="text-center">无公共请求参数</td>
                         </tr>
                         <else/>
                         <foreach name="info.paramList" item="param">
@@ -228,6 +281,21 @@
                                         <else/>
                                         <span class="badge badge-pill badge-secondary">否</span>
                                     </eq>
+                                </td>
+                                <td>
+                                    <notempty name="param.data.structure">
+                                        <select class="form-control form-control-sm api-doc-test-globals" name="{$param.key}" <?=$param['must'] ? 'required' : '';?>>
+                                            <option value="">--请选择--</option>
+                                            <foreach name="param.data.structure" item="structure">
+                                                <option value="{$structure.key}">
+                                                    {$structure.key}
+                                                    : <?=\BusyPHP\apidoc\ApiDoc::parseNoHtml($structure['data']['title']);?>
+                                                </option>
+                                            </foreach>
+                                        </select>
+                                        <else/>
+                                        <input type="text" class="form-control form-control-sm api-doc-test-globals" name="{$param.key}" placeholder="<?=\BusyPHP\apidoc\ApiDoc::parseNoHtml($structure['data']['title']);?>" <?=$param['must'] ? 'required' : '';?>/>
+                                    </notempty>
                                 </td>
                                 <td class="text-left">
                                     <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($param['data']['title']);?>
@@ -245,14 +313,15 @@
                     </tbody>
                 </table>
             </div>
-            <h4 class="api-doc-api-title" id="api_doc_global_returns"><a href="#api_doc_global_returns"># 公共响应结构</a>
-            </h4>
-            <div class="api-doc-markdown markdown-body">
+            <h3 class="api-doc-api-titl h3 mb-4" id="api_doc_global_returns">
+                <a class="nav-goto" href="#api_doc_global_returns"># 公共响应结构</a>
+            </h3>
+            <div class="api-doc-markdown markdown-body mb-4">
                 <?=Parsedown::instance()->parse('> 接口返回的基本参数结构，每一个接口都会返回如下基本结构。**注意：在对应的接口返回结构中不在重复声明**。');?>
             </div>
 
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered api-doc-return-table">
+            <div class="table-responsive mb-4">
+                <table class="table table-striped table-bordered table-hover api-doc-return-table">
                     <thead class="thead-light">
                     <tr class="text-center">
                         <th width="300">参数</th>
@@ -274,116 +343,229 @@
 
 
             <foreach name="list" item="vo">
-                <h2 class="api-doc-module-title" id="{$vo.module}">{$vo.title}</h2>
+                <h2 class="api-doc-module-title h2 mt-5" id="{$vo.module}">{$vo.title}</h2>
+
+                <hr class="mb-4"/>
+
                 <notempty name="vo.desc">
-                    <div class="api-doc-markdown markdown-body">
+                    <div class="api-doc-markdown markdown-body mb-4">
                         <?=Parsedown::instance()->parse($vo['desc']);?>
                     </div>
                 </notempty>
-                
+
                 <foreach name="vo.list" item="item">
-                    <h4 class="api-doc-api-title" id="{$item.id}">
-                        <a href="#{$item.id}"># {$item.title}</a>
-                    </h4>
+                    <h3 class="api-doc-api-title h3 mb-4" id="{$item.id}">
+                        <a class="nav-goto" href="#{$item.id}"># {$item.title}</a>
+                    </h3>
                     <notempty name="item.desc">
-                        <div class="api-doc-markdown markdown-body">
+                        <div class="api-doc-markdown markdown-body mb-4">
                             <?=Parsedown::instance()->parse($item['desc']);?>
                         </div>
                     </notempty>
-                    <h5>请求说明</h5>
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered">
-                            <thead class="thead-light">
-                            <tr>
-                                <th class="text-center table-nowrap">请求地址</th>
-                                <th colspan="3"><span class="badge badge-pill badge-info">{$item.path}</span></th>
-                            </tr>
-                            <tr>
-                                <th class="text-center table-nowrap">请求方式</th>
-                                <th colspan="3"><span class="badge badge-pill badge-success">{$item.type}</span></th>
-                            </tr>
-                            <tr class="text-center">
-                                <th width="150">参数</th>
-                                <th width="150">类型</th>
-                                <th width="150">必传</th>
-                                <th>说明</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <empty name="item.params">
-                                <tr>
-                                    <td colspan="4" class="text-center">无输入参数</td>
-                                </tr>
-                                <else/>
-                                <foreach name="item.params" item="param">
+
+
+                    <div class="nav nav-tabs mb-4" role="tablist" id="tab_{$item.id}">
+                        <a class="nav-item active" data-toggle="tab" href="#tab_panel_params_{$item.id}" role="tab">参数结构</a>
+                        <a class="nav-item" data-toggle="tab" href="#tab_panel_test_{$item.id}" role="tab">接口测试</a>
+                    </div>
+
+                    <div class="tab-content mb-4">
+                        <div class="tab-pane show active" id="tab_panel_params_{$item.id}" role="tabpanel">
+                            <h4 class="h4 mb-4">请求说明</h4>
+                            <div class="table-responsive mb-4">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead class="thead-light">
                                     <tr>
-                                        <td class="text-center table-nowrap">{$param.key}</td>
-                                        <td class="text-center table-nowrap">{$param.type}</td>
-                                        <td class="text-center">
-                                            <eq name="param.must" value="1">
-                                                <span class="badge badge-pill badge-success">是</span>
-                                                <else/>
-                                                <span class="badge badge-pill badge-secondary">否</span>
-                                            </eq>
-                                        </td>
-                                        <td class="text-left">
-                                            <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($param['data']['title']);?>
-                                            <notempty name="param.data.structure">
-                                                <foreach name="param.data.structure" item="structure">
-                                                    <div>
-                                                        <span class="badge badge-pill badge-dark">{$structure.key}</span> <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($structure['data']['title']);?>
-                                                    </div>
-                                                </foreach>
-                                            </notempty>
-                                        </td>
+                                        <th class="text-center table-nowrap">请求地址</th>
+                                        <th colspan="3"><span class="badge badge-pill badge-info">{$item.path}</span>
+                                        </th>
                                     </tr>
-                                </foreach>
-                            </empty>
-                            </tbody>
-                        </table>
+                                    <tr>
+                                        <th class="text-center table-nowrap">请求方式</th>
+                                        <th colspan="3"><span class="badge badge-pill badge-success">{$item.type}</span>
+                                        </th>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <th width="150">参数</th>
+                                        <th width="150">类型</th>
+                                        <th width="150">必传</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <empty name="item.params">
+                                        <tr>
+                                            <td colspan="4" class="text-center">无输入参数</td>
+                                        </tr>
+                                        <else/>
+                                        <foreach name="item.params" item="param">
+                                            <tr>
+                                                <td class="text-center table-nowrap">{$param.key}</td>
+                                                <td class="text-center table-nowrap">{$param.type}</td>
+                                                <td class="text-center">
+                                                    <eq name="param.must" value="1">
+                                                        <span class="badge badge-pill badge-success">是</span>
+                                                        <else/>
+                                                        <span class="badge badge-pill badge-secondary">否</span>
+                                                    </eq>
+                                                </td>
+                                                <td class="text-left">
+                                                    <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($param['data']['title']);?>
+                                                    <notempty name="param.data.structure">
+                                                        <foreach name="param.data.structure" item="structure">
+                                                            <div>
+                                                                <span class="badge badge-pill badge-dark">{$structure.key}</span> <?=\BusyPHP\apidoc\ApiDoc::parseToMarkdownHtml($structure['data']['title']);?>
+                                                            </div>
+                                                        </foreach>
+                                                    </notempty>
+                                                </td>
+                                            </tr>
+                                        </foreach>
+                                    </empty>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 class="h4 mb-4">输出说明</h4>
+
+                            <div class="table-responsive mb-4">
+                                <table class="table table-striped table-bordered api-doc-return-table table-hover">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th class="text-center table-nowrap">输出格式</th>
+                                        <th colspan="2">
+                                            <span class="badge badge-pill badge-info">{$item.return.title}</span>
+                                        </th>
+                                    </tr>
+                                    <tr class="text-center">
+                                        <th width="300">参数</th>
+                                        <th width="150">类型</th>
+                                        <th>说明</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <empty name="item.return.structure">
+                                        <tr>
+                                            <td colspan="3" class="text-center">无输出参数</td>
+                                        </tr>
+                                        <else/>
+                                        <?=\BusyPHP\apidoc\ApiDoc::renderTree($item['return']['structure']);?>
+                                    </empty>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4 class="h4 mb-4">输出示例</h4>
+                            <pre class="brush:<?=strtolower($item['return']['title']) == 'json' ? 'js' : 'xml';?>;" data-type="json">{$item.example|default="无输出示例"}</pre>
+                        </div>
+                        <div class="tab-pane" id="tab_panel_test_{$item.id}" role="tabpanel">
+                            <h4 class="h4 mb-4">请求参数</h4>
+                            <form class="api-doc-test-form" method="post" onsubmit="return false;" data-result="#api_doc_test_result{$item.id}" data-return-type="{$item.return.title}">
+                                <input type="hidden" name="__api_doc_method__" value="{$item.type}"/>
+                                <input type="hidden" name="__api_doc_path__" value="{$item.path}"/>
+                                <div class="table-responsive mb-4">
+                                    <table class="table table-striped table-bordered table-hover">
+                                        <thead class="thead-light">
+                                        <tr>
+                                            <th class="text-center table-nowrap">请求地址</th>
+                                            <th colspan="3">
+                                                <span class="badge badge-pill badge-info">{$item.path}</span>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th class="text-center table-nowrap">请求方式</th>
+                                            <th colspan="3">
+                                                <span class="badge badge-pill badge-success">{$item.type}</span>
+                                            </th>
+                                        </tr>
+                                        <tr class="text-center">
+                                            <th width="150">参数</th>
+                                            <th>内容</th>
+                                            <th width="80">类型</th>
+                                            <th width="80">必填</th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+                                        <tr>
+                                            <th>
+                                                <select class="form-control form-control-sm" name="__api_doc_root__">
+                                                    <option value="{$info.debugRootUrl}">测试入口</option>
+                                                    <option value="{$info.releaseRootUrl}">正式入口</option>
+                                                </select>
+                                            </th>
+                                            <th colspan="3">
+                                                <button type="submit" class="btn btn-primary btn-sm">执行测试</button>
+                                                <button type="reset" class="btn btn-secondary btn-sm">重置</button>
+                                            </th>
+                                        </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        <empty name="item.params">
+                                            <tr>
+                                                <td colspan="4" class="text-center">无输入参数</td>
+                                            </tr>
+                                            <else/>
+                                            <foreach name="item.params" item="param">
+                                                <tr>
+                                                    <td class="text-center table-nowrap table-vertical-align">
+                                                        {$param.key}
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <notempty name="param.data.structure">
+                                                            <select class="form-control form-control-sm" name="__api_doc_params__[{$param.key}]" <?=$param['must'] ? 'required' : '';?>>
+                                                                <option value="">--请选择--</option>
+                                                                <foreach name="param.data.structure" item="structure">
+                                                                    <option value="{$structure.key}">
+                                                                        {$structure.key}
+                                                                        : <?=\BusyPHP\apidoc\ApiDoc::parseNoHtml($structure['data']['title'])?>
+                                                                    </option>
+                                                                </foreach>
+                                                            </select>
+                                                            <else/>
+                                                            <eq name="param.type" value="file">
+                                                                <input type="file" class="form-control form-control-file form-control-sm" placeholder="<?=\BusyPHP\apidoc\ApiDoc::parseNoHtml($param['data']['title'])?>" name="__api_doc_params__[{$param.key}]" <?=$param['must'] ? 'required' : '';?>/>
+                                                                <else/>
+                                                                <input type="text" class="form-control form-control-sm" placeholder="<?=\BusyPHP\apidoc\ApiDoc::parseNoHtml($param['data']['title'])?>" name="__api_doc_params__[{$param.key}]" <?=$param['must'] ? 'required' : '';?>/>
+                                                            </eq>
+                                                        </notempty>
+                                                    </td>
+                                                    <td class="text-center table-vertical-align">
+                                                        {$param.type}
+                                                    </td>
+                                                    <td class="text-center table-vertical-align">
+                                                        <eq name="param.must" value="1">
+                                                            <span class="badge badge-pill badge-success">是</span>
+                                                            <else/>
+                                                            <span class="badge badge-pill badge-secondary">否</span>
+                                                        </eq>
+                                                    </td>
+                                                </tr>
+                                            </foreach>
+                                        </empty>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </form>
+
+                            <h4 class="h4 mb-4">响应结果</h4>
+                            <div class="api-doc-test-result mb-4" id="api_doc_test_result{$item.id}"></div>
+                        </div>
                     </div>
-
-                    <h5>输出说明</h5>
-
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered api-doc-return-table">
-                            <thead class="thead-light">
-                            <tr>
-                                <th class="text-center table-nowrap">输出格式</th>
-                                <th colspan="2"><span class="badge badge-pill badge-info">{$item.return.title}</span>
-                                </th>
-                            </tr>
-                            <tr class="text-center">
-                                <th width="300">参数</th>
-                                <th width="150">类型</th>
-                                <th>说明</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <empty name="item.return.structure">
-                                <tr>
-                                    <td colspan="3" class="text-center">无输出参数</td>
-                                </tr>
-                                <else/>
-                                <?=\BusyPHP\apidoc\ApiDoc::renderTree($item['return']['structure']);?>
-                            </empty>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h5>输出示例</h5>
-                    <pre class="brush:js;" data-type="json">{$item.example|default="无输出示例"}</pre>
                 </foreach>
             </foreach>
 
-            <h2 class="api-doc-module-title" id="api_doc_appendix">附录</h2>
-            <h4 class="api-doc-api-title" id="api_doc_global_errorCode"><a href="#api_doc_global_errorCode"># 错误代码</a>
-            </h4>
-            <div class="api-doc-markdown markdown-body">
+            <h2 class="api-doc-module-title h2 mt-5" id="api_doc_appendix">附录</h2>
+
+            <hr class="mb-4"/>
+
+            <h3 class="api-doc-api-title h3 mb-4" id="api_doc_global_errorCode">
+                <a class="nav-goto" href="#api_doc_global_errorCode"># 错误代码</a>
+            </h3>
+            <div class="api-doc-markdown markdown-body mb-4">
                 <?=Parsedown::instance()->parse('> 接口返回的错误代码，如需：需登录、权限不足等，业务中可以根据错误代码进行`页面提示`或`跳转`');?>
             </div>
-            <div class="table-responsive">
-                <table class="table table-striped table-bordered">
+            <div class="table-responsive mb-4">
+                <table class="table table-striped table-bordered table-hover">
                     <thead class="thead-light">
                     <tr class="text-center">
                         <th width="150">错误代码</th>
@@ -412,17 +594,33 @@
             </div>
 
             <foreach name="info.appendixList" item="vo" key="index">
-                <h4 class="api-doc-api-title" id="api_doc_appendix_{$vo.id}_{$index}">
-                    <a href="#api_doc_appendix_{$vo.id}_{$index}"># {$vo.name}</a></h4>
-                <div class="api-doc-markdown markdown-body">
+                <h3 class="api-doc-api-title h3 mb-4" id="api_doc_appendix_{$vo.id}_{$index}">
+                    <a class="nav-goto" href="#api_doc_appendix_{$vo.id}_{$index}"># {$vo.name}</a>
+                </h3>
+                <div class="api-doc-markdown markdown-body mb-4">
                     <?=Parsedown::instance()->parse($vo['content']);?>
                 </div>
             </foreach>
         </div>
-    </div>
+    </main>
 </div>
 
+<js href="//cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"/>
+<js href="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"/>
+<js href="//cdn.bootcdn.net/ajax/libs/jquery-treetable/3.2.0/jquery.treetable.min.js"/>
+<js href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js"/>
+<js href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushJScript.min.js"/>
+<js href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushXml.min.js"/>
+<js href="//cdn.bootcdn.net/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"/>
+<js href="//cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"/>
+<js href="//cdn.bootcdn.net/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js"/>
+<js href="//cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"/>
 <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        pangu.autoSpacingPage();
+    });
+
+
     $(function () {
         SyntaxHighlighter.defaults['collapse'] = true;
         SyntaxHighlighter.config.strings.expandSource = '展开示例';
@@ -433,11 +631,14 @@
         var offset = $header.outerHeight();
         var $nav = $('.api-doc-nav');
         var $navbarToggler = $('.navbar-toggler');
-        $body.scrollspy({target : '#api_doc_nav', offset : offset});
+        $body.scrollspy({
+            target : '#api_doc_nav',
+            offset : offset
+        });
 
         $navbarToggler.on('click', function (e) {
             e.stopPropagation();
-            
+
             if ($nav.css('display') === 'none') {
                 $nav.show();
             } else {
@@ -456,7 +657,7 @@
                 $nav.show();
             }
         });
-        
+
         $(window).on('resize', function () {
             if ($(window).width() <= 767) {
                 $nav.hide();
@@ -466,14 +667,16 @@
         });
 
 
-        $('.nav-link, h4 a').on('click', function () {
-
-            var $target = $($(this).attr('href'));
+        $('.nav-goto').on('click', function (e) {
+            var href = $(this).attr('href');
+            var $target = $(href);
             var pos = $target.offset();
 
             $body.animate({
                 scrollTop : pos.top - offset + 1
-            })
+            });
+
+            window.location.hash = '!' + href.replace('#', '');
 
             return false;
         });
@@ -492,6 +695,252 @@
             SyntaxHighlighter.highlight();
         });
 
+        /**
+         * 格式化xml
+         * @param content
+         * @returns {*}
+         */
+        function parseXml(content) {
+            let xmlDoc = null;
+            try {
+                xmlDoc = (new DOMParser()).parseFromString(content.replace(/[\n\r]/g, ""), 'text/xml');
+            } catch (e) {
+                return false;
+            }
+
+            function buildXml(index, list, element) {
+                let t = [];
+                for (let i = 0; i < index; i++) {
+                    t.push('&nbsp;&nbsp;&nbsp;&nbsp;');
+                }
+                t = t.join("");
+                list.push(t + '&lt;<span class="code-key">' + element.nodeName + '</span>&gt;<br />');
+                for (let i = 0; i < element.childNodes.length; i++) {
+                    let nodeName = element.childNodes[i].nodeName;
+                    if (element.childNodes[i].childNodes.length === 1) {
+                        let value = element.childNodes[i].childNodes[0].nodeValue;
+                        let value_color = !isNaN(Number(value)) ? 'code-number' : 'code-string';
+                        let value_txt = '<span class="' + value_color + '">' + value + '</span>';
+                        let item = t + '&nbsp;&nbsp;&nbsp;&nbsp;&lt;<span class="code-key">' + nodeName +
+                                   '</span>&gt;' + value_txt + '&lt;/<span class="code-key">' + nodeName + '</span>&gt;<br />';
+                        list.push(item);
+                    } else {
+                        buildXml(++index, list, element.childNodes[i]);
+                    }
+                }
+                list.push(t + '&lt;/<span class="code-key">' + element.nodeName + '</span>&gt;<br />');
+            }
+
+            let list = [];
+            buildXml(0, list, xmlDoc.documentElement);
+
+            return list.join("");
+        }
+
+        var $inputHeaders = $('.api-doc-test-headers');
+        var $inputGlobals = $('.api-doc-test-globals');
+
+        function saveHeaders() {
+            var headers = {};
+            $inputHeaders.each(function () {
+                headers[$(this).attr('name')] = $(this).val()
+            });
+
+            localStorage.setItem('api_doc_test_headers', JSON.stringify(headers));
+        }
+
+        function getHeaders() {
+            var headers = localStorage.getItem('api_doc_test_headers') || '{}';
+
+            return JSON.parse(headers);
+        }
+
+
+        function saveParams() {
+            var params = {};
+            $inputGlobals.each(function () {
+                params[$(this).attr('name')] = $(this).val()
+            });
+
+            localStorage.setItem('api_doc_test_params', JSON.stringify(params));
+        }
+
+        function getParams() {
+            var params = localStorage.getItem('api_doc_test_params') || '{}';
+
+            return JSON.parse(params);
+        }
+
+        function saveFormParams($form) {
+            var key = $form.data('result');
+            var paramsArray = $form.serializeArray();
+            var data = {};
+            var params = getFormParams();
+
+            for (var i = 0; i < paramsArray.length; i++) {
+                if (paramsArray[i].name == '__api_doc_path__' || paramsArray[i].name == '__api_doc_method__') {
+                    continue;
+                }
+
+                data[paramsArray[i].name] = paramsArray[i].value;
+            }
+            params[key] = data;
+
+            localStorage.setItem('api_doc_test_form_data', JSON.stringify(params));
+        }
+
+        function getFormParams() {
+            var params = localStorage.getItem('api_doc_test_form_data') || '{}';
+
+            return JSON.parse(params);
+        }
+
+        function saveTabs(id, value) {
+            var params = getTabs();
+            params[id] = value;
+            localStorage.setItem('api_doc_tabs', JSON.stringify(params));
+        }
+
+        function getTabs() {
+            var params = localStorage.getItem('api_doc_tabs') || '{}';
+
+            return JSON.parse(params);
+        }
+
+        $('.api-doc-test-save-headers').on('click', function () {
+            saveHeaders();
+            layer.msg('保存成功', {time : 1500, icon : 1});
+        });
+
+
+        $('.api-doc-test-save-globals').on('click', function () {
+            saveParams();
+            layer.msg('保存成功', {time : 1500, icon : 1});
+        });
+
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            var tabId = $(e.target).closest('.nav-tabs').attr('id');
+            saveTabs(tabId, $(e.target).attr('href'));
+        })
+
+        $('.api-doc-test-form').removeAttr('onsubmit').on('submit', function () {
+            saveFormParams($(this));
+
+            var $result = $($(this).data('result'));
+            var returnType = $(this).data('return-type');
+            var $submit = $(this).find('[type="submit"]').prop('disabled', true);
+            var dialog = layer.msg('测试中...', {
+                icon : 16, shade : 0.5
+            });
+
+            var complete = function () {
+                layer.close(dialog);
+                $submit.prop('disabled', false);
+            };
+
+            var htmlView = function (data) {
+                var $htmlView = $('<textarea class="form-control api-doc-html-view" rows="10" readonly/>');
+                $htmlView.val(data);
+                $result.html($htmlView);
+            };
+
+            var hideHeaderBoxId = $result.attr('id') + 'HideHeaders';
+            var $hideHeaderBox = $(this).find('#' + hideHeaderBoxId);
+            var headers = getHeaders();
+            if ($hideHeaderBox.length === 0) {
+                $hideHeaderBox = $('<div id="' + hideHeaderBoxId + '"/>');
+                $(this).append($hideHeaderBox);
+            }
+
+            $hideHeaderBox.html('');
+            for (var key in headers) {
+                $hideHeaderBox.append('<input type="hidden" name="__api_doc_headers__[' + key + ']" value="' + (headers[key] || '') + '"/>');
+            }
+
+            var hideParamsBoxId = $result.attr('id') + 'HideParams';
+            var $hideParamsBox = $(this).find('#' + hideParamsBoxId);
+            var params = getParams();
+            if ($hideParamsBox.length === 0) {
+                $hideParamsBox = $('<div id="' + hideParamsBoxId + '"/>');
+                $(this).append($hideParamsBox);
+            }
+
+            $hideParamsBox.html('');
+            for (var key in params) {
+                $hideParamsBox.append('<input type="hidden" name="__api_doc_globals__[' + key + ']" value="' + (params[key] || '') + '"/>');
+            }
+
+            $(this).ajaxSubmit({
+                url     : '{:url()}',
+                method  : 'post',
+                success : function (data, statusText, xhr, $form) {
+                    complete();
+
+                    let text = xhr.responseText || '';
+                    switch (returnType.toLowerCase().trim()) {
+                        case 'xml':
+                            var content = parseXml(text);
+                            if (false === content) {
+                                htmlView(text);
+                            } else {
+                                var $xmlView = $('<div class="api-doc-xml-view"/>');
+                                $xmlView.html(content);
+                                $result.html($xmlView);
+                            }
+                            break;
+                        case 'json':
+                            try {
+                                var json = JSON.parse(text);
+                                var $jsonView = $('<div class="api-doc-json-view"/>');
+                                $result.html($jsonView);
+                                $jsonView.JSONView(json);
+                            } catch (e) {
+                                htmlView(text);
+                            }
+                            break;
+                        default:
+                            htmlView(data);
+
+                    }
+                },
+
+                error : function (xhr, status, err) {
+                    console.log(arguments);
+                    complete();
+
+                    htmlView(data);
+                }
+            });
+
+            return false;
+        });
+
+
+        var globalsHeaders = getHeaders();
+        $inputHeaders.each(function () {
+            $(this).val(globalsHeaders[$(this).attr('name')] || '');
+        });
+
+
+        var globalsParams = getParams();
+        $inputGlobals.each(function () {
+            $(this).val(globalsParams[$(this).attr('name')] || '');
+        });
+
+        var formParams = getFormParams();
+        for (var formId in formParams) {
+            var $form = $('[data-result="' + formId + '"]');
+            var params = formParams[formId] || {};
+
+            for (var name in params) {
+                $form.find('[name="' + name + '"]').val(params[name] || '');
+            }
+        }
+
+        var tabParams = getTabs();
+        for (var tabId in tabParams) {
+            $('[href="' + tabParams[tabId] + '"]').trigger('click');
+        }
     });
 </script>
 
