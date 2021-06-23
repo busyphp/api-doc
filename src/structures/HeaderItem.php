@@ -44,7 +44,6 @@ class HeaderItem extends BaseStructure
     public function setKey(string $key)
     {
         $this->key = trim($key);
-        $this->key = str_replace('_', '-', $this->key);
     }
     
     
