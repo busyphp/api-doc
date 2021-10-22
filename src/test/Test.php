@@ -3,9 +3,10 @@
 namespace BusyPHP\apidoc\test;
 
 use BusyPHP\App;
-use BusyPHP\exception\AppException;
-use BusyPHP\helper\net\Http;
-use BusyPHP\helper\util\Str;
+use BusyPHP\helper\HttpHelper;
+use Exception;
+use RuntimeException;
+use think\exception\HttpResponseException;
 use think\response\Html;
 
 /**
@@ -21,7 +22,7 @@ class Test
      */
     public function exec()
     {
-        $request = request();
+        $request = App::init()->request;
         $method  = $request->post('__api_doc_method__');
         $root    = $request->post('__api_doc_root__');
         $headers = $request->post('__api_doc_headers__');
@@ -36,7 +37,7 @@ class Test
         $headers = is_array($headers) ? $headers : [];
         $params  = array_merge($params, $globals);
         
-        $http = new Http();
+        $http = new HttpHelper();
         if ($headers) {
             $http->setHeaders($headers);
         }
@@ -55,30 +56,13 @@ class Test
                 ];
                 
                 if (!is_uploaded_file($files['tmp_name'][$key])) {
-                    abort(404, '上传文件异常');
+                    throw new RuntimeException('上传文件异常');
                 }
                 if ($files['error'][$key] != 0) {
-                    abort(404, '上传文件失败');
+                    throw new RuntimeException('上传文件失败');
                 }
-            }
-            
-            $httpFiles = [];
-            $httpPath  = App::runtimeUploadPath('api_doc' . DIRECTORY_SEPARATOR . Str::uuid());
-            if (!is_dir($httpPath)) {
-                if (!mkdir($httpPath, 0775, true)) {
-                    abort(404, '没有写入权限' . $httpPath);
-                }
-            }
-            
-            foreach ($fileList as $key => $file) {
-                $httpFiles[$key] = $httpPath . $file['name'];
-                if (!move_uploaded_file($file['tmp_name'], $httpFiles[$key])) {
-                    abort(404, '移动文件失败' . $httpPath[$key]);
-                }
-            }
-            
-            foreach ($httpFiles as $key => $file) {
-                $http->addFile($key, $file);
+                
+                $http->addFile($key, $files['tmp_name'][$key]);
             }
         }
         
@@ -88,30 +72,29 @@ class Test
                 case 'postjson':
                 case 'post_json':
                 case 'json':
-                    $result = Http::postJSON($url, $params, $http);
+                    $result = HttpHelper::postJSON($url, $params, $http);
                 break;
                 
                 // post xml
                 case 'postxml':
                 case 'post_xml':
                 case 'xml':
-                    $result = Http::postXML($url, $params, $http);
+                    $result = HttpHelper::postXML($url, $params, $http);
                 break;
                 
                 // post
                 case 'post':
-                    $result = Http::post($url, $params, $http);
+                    $result = HttpHelper::post($url, $params, $http);
                 break;
                 
                 // get
                 default:
-                    $result = Http::get($url, $params, $http);
+                    $result = HttpHelper::get($url, $params, $http);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $result = $e->getMessage();
         }
         
-        Html::create($result)->send();
-        exit;
+        throw new HttpResponseException(Html::create($result));
     }
 }

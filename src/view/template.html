@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>{$page_title} - BusyPHP ApiDoc V1.0</title>
-    <css href="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/css/bootstrap.min.css"/>
-    <css href="//cdn.bootcdn.net/ajax/libs/font-awesome/5.9.0/css/all.min.css"/>
-    <css href="//cdn.bootcdn.net/ajax/libs/jquery-treetable/3.2.0/css/jquery.treetable.min.css"/>
-    <css href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCore.min.css"/>
-    <css href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/styles/shCoreEmacs.min.css"/>
-    <css href="//cdn.bootcdn.net/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css"/>
-    <css href="//cdn.bootcdn.net/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.css"/>
+    <css href="__ASSETS__plugins/apidoc/bootstrap/bootstrap.min.css"/>
+    <css href="__ASSETS__plugins/apidoc/font-awesome/css/font-awesome.min.css"/>
+    <css href="__ASSETS__plugins/apidoc/treetable/jquery.treetable.min.css"/>
+    <css href="__ASSETS__plugins/apidoc/syntax/shCore.min.css"/>
+    <css href="__ASSETS__plugins/apidoc/syntax/shCoreEmacs.min.css"/>
+    <css href="__ASSETS__plugins/apidoc/css/github-markdown.min.css"/>
+    <css href="__ASSETS__plugins/apidoc/css/jquery.jsonview.min.css"/>
     <style>
         /* table */
         .table { margin: 0;}
@@ -605,16 +605,16 @@
     </main>
 </div>
 
-<js href="//cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"/>
-<js href="//cdn.bootcdn.net/ajax/libs/twitter-bootstrap/4.5.3/js/bootstrap.min.js"/>
-<js href="//cdn.bootcdn.net/ajax/libs/jquery-treetable/3.2.0/jquery.treetable.min.js"/>
-<js href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js"/>
-<js href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushJScript.min.js"/>
-<js href="//cdn.bootcdn.net/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shBrushXml.min.js"/>
-<js href="//cdn.bootcdn.net/ajax/libs/jquery.form/4.3.0/jquery.form.min.js"/>
-<js href="//cdn.bootcdn.net/ajax/libs/layer/3.1.1/layer.min.js"/>
-<js href="//cdn.bootcdn.net/ajax/libs/jquery-jsonview/1.2.3/jquery.jsonview.min.js"/>
-<js href="//cdn.bootcdn.net/ajax/libs/pangu/4.0.7/pangu.min.js"/>
+<js href="__ASSETS__plugins/apidoc/js/jquery.min.js"/>
+<js href="__ASSETS__plugins/apidoc/bootstrap/bootstrap.min.js"/>
+<js href="__ASSETS__plugins/apidoc/treetable/jquery.treetable.min.js"/>
+<js href="__ASSETS__plugins/apidoc/syntax/shCore.min.js"/>
+<js href="__ASSETS__plugins/apidoc/syntax/shBrushJScript.min.js"/>
+<js href="__ASSETS__plugins/apidoc/syntax/shBrushXml.min.js"/>
+<js href="__ASSETS__plugins/apidoc/js/jquery.form.min.js"/>
+<js href="__ASSETS__plugins/apidoc/layer/layer.min.js"/>
+<js href="__ASSETS__plugins/apidoc/js/jquery.jsonview.min.js"/>
+<js href="__ASSETS__plugins/apidoc/js/pangu.min.js"/>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
         pangu.autoSpacingPage();
@@ -908,7 +908,7 @@
                     console.log(arguments);
                     complete();
 
-                    htmlView(data);
+                    htmlView(err);
                 }
             });
 

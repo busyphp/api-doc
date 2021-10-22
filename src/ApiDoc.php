@@ -3,8 +3,10 @@
 namespace BusyPHP\apidoc;
 
 use BusyPHP\apidoc\scan\Scan;
-use BusyPHP\apidoc\structures\InfoStructure;
+use BusyPHP\apidoc\structs\InfoStructure;
 use BusyPHP\apidoc\test\Test;
+use BusyPHP\App;
+use BusyPHP\exception\AppException;
 use Exception;
 use Parsedown;
 use think\Response;
@@ -43,7 +45,7 @@ class ApiDoc
      */
     public function __construct(...$files)
     {
-        if (request()->isAjax()) {
+        if (App::init()->request->isAjax()) {
             $test = new Test();
             $test->exec();
         }

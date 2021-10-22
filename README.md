@@ -106,13 +106,13 @@ class ShowController extends \BusyPHP\Controller {
         $apiDoc->getInfo()->addHeader('header_params', true, '请求头参数说明');
 
         // 添加全局返回结构
-        $apiDoc->getInfo()->addReturn(new \BusyPHP\apidoc\structures\ReturnItem('参数', '类型', new \BusyPHP\apidoc\structures\DataStructure('参数说明')));
+        $apiDoc->getInfo()->addReturn(new \BusyPHP\apidoc\structs\ReturnItem('参数', '类型', new \BusyPHP\apidoc\structs\DataStructure('参数说明')));
 
         // 添加全局参数        
-        $apiDoc->getInfo()->addParam(new \BusyPHP\apidoc\structures\ParamItem('param1', 'boolean', true, new \BusyPHP\apidoc\structures\DataStructure('参数说明'))); 
+        $apiDoc->getInfo()->addParam(new \BusyPHP\apidoc\structs\ParamItem('param1', 'boolean', true, new \BusyPHP\apidoc\structs\DataStructure('参数说明'))); 
            
         // 添加附录        
-        $apiDoc->getInfo()->addAppendix(new \BusyPHP\apidoc\structures\AppendixItem('附录1', '附录1描述'));            
+        $apiDoc->getInfo()->addAppendix(new \BusyPHP\apidoc\structs\AppendixItem('附录1', '附录1描述'));            
 
         
         return $apiDoc->renderToHTML('XX项目接口文档');

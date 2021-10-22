@@ -2,17 +2,17 @@
 
 namespace BusyPHP\apidoc\scan;
 
-use BusyPHP\apidoc\structures\ApiItem;
-use BusyPHP\apidoc\structures\ApiList;
-use BusyPHP\apidoc\structures\DataStructure;
-use BusyPHP\apidoc\structures\GroupItem;
-use BusyPHP\apidoc\structures\GroupList;
-use BusyPHP\apidoc\structures\ParamList;
-use BusyPHP\apidoc\structures\ParamItem;
-use BusyPHP\apidoc\structures\ParamOptionItem;
-use BusyPHP\apidoc\structures\ParamOptionList;
-use BusyPHP\apidoc\structures\ReturnItem;
-use BusyPHP\apidoc\structures\ReturnList;
+use BusyPHP\apidoc\structs\ApiItem;
+use BusyPHP\apidoc\structs\ApiList;
+use BusyPHP\apidoc\structs\DataStructure;
+use BusyPHP\apidoc\structs\GroupItem;
+use BusyPHP\apidoc\structs\GroupList;
+use BusyPHP\apidoc\structs\ParamList;
+use BusyPHP\apidoc\structs\ParamItem;
+use BusyPHP\apidoc\structs\ParamOptionItem;
+use BusyPHP\apidoc\structs\ParamOptionList;
+use BusyPHP\apidoc\structs\ReturnItem;
+use BusyPHP\apidoc\structs\ReturnList;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;

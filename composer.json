@@ -1,27 +1,31 @@
 {
-	"name"              : "busyphp/api-doc",
-	"type"              : "library",
-	"description"       : "",
-	"authors"           : [
+	"name"        : "busyphp/api-doc",
+	"type"        : "library",
+	"description" : "自动化接口文档",
+	"authors"     : [
 		{
 			"name"  : "busy^life",
 			"email" : "busy.life@qq.com"
 		}
 	],
-	"license"           : "Apache-2.0",
-	"minimum-stability" : "dev",
-	"require"           : {
-		"busyphp/busyphp" : "^3.0",
-		"erusev/parsedown": "1.7.4"
+	"license"     : "CC-BY-NC-4.0",
+	"require"     : {
+		"busyphp/busyphp"  : "^6.0",
+		"erusev/parsedown" : "1.7.4"
 	},
-	"autoload"          : {
+	"autoload"    : {
 		"psr-4" : {
-			"app\\"             : "app",
-			"core\\"            : "core",
 			"BusyPHP\\apidoc\\" : "src"
 		}
 	},
-	"config"            : {
+	"config"      : {
 		"preferred-install" : "dist"
+	},
+	"extra"       : {
+		"busyphp" : {
+			"services" : [
+				"BusyPHP\\apidoc\\Service"
+			]
+		}
 	}
 }
