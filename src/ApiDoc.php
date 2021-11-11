@@ -6,7 +6,6 @@ use BusyPHP\apidoc\scan\Scan;
 use BusyPHP\apidoc\structs\InfoStructure;
 use BusyPHP\apidoc\test\Test;
 use BusyPHP\App;
-use BusyPHP\exception\AppException;
 use Exception;
 use Parsedown;
 use think\Response;

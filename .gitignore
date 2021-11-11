@@ -8,4 +8,5 @@
 /runtime/
 composer.lock
 composer.json.dev
+composer.json.bak
 think
