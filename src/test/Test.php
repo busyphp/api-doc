@@ -7,6 +7,8 @@ use BusyPHP\helper\HttpHelper;
 use Exception;
 use RuntimeException;
 use think\exception\HttpResponseException;
+use think\facade\Filesystem;
+use think\file\UploadedFile;
 use think\response\Html;
 
 /**
@@ -62,7 +64,13 @@ class Test
                     throw new RuntimeException('上传文件失败');
                 }
                 
-                $http->addFile($key, $files['tmp_name'][$key]);
+                $file     = new UploadedFile($files['tmp_name'][$key], $files['name'][$key], $files['type'][$key], $files['error'][$key]);
+                $filename = Filesystem::disk('local')->putFile('apidoc', $file);
+                if (!$filename) {
+                    throw new RuntimeException('上传文件失败');
+                }
+                
+                $http->addFile($key, Filesystem::disk('local')->path($filename));
             }
         }
         
