@@ -22,7 +22,7 @@ class Test
      */
     public function exec()
     {
-        $request = App::init()->request;
+        $request = App::getInstance()->request;
         $method  = $request->post('__api_doc_method__');
         $root    = $request->post('__api_doc_root__');
         $headers = $request->post('__api_doc_headers__');

@@ -44,7 +44,7 @@ class ApiDoc
      */
     public function __construct(...$files)
     {
-        if (App::init()->request->isAjax()) {
+        if (App::getInstance()->request->isAjax()) {
             $test = new Test();
             $test->exec();
         }
