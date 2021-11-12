@@ -12,7 +12,7 @@ use think\response\Html;
 /**
  * 测试
  * @author busy^life <busy.life@qq.com>
- * @copyright (c) 2015--2019 ShanXi Han Tuo Technology Co.,Ltd. All rights reserved.
+ * @copyright (c) 2015--2021 ShanXi Han Tuo Technology Co.,Ltd. All rights reserved.
  * @version $Id: 2020/11/7 下午12:07 上午 Test.php $
  */
 class Test

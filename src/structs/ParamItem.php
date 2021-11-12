@@ -5,7 +5,7 @@ namespace BusyPHP\apidoc\structs;
 /**
  * 请求参数结构对象
  * @author busy^life <busy.life@qq.com>
- * @copyright (c) 2015--2019 ShanXi Han Tuo Technology Co.,Ltd. All rights reserved.
+ * @copyright (c) 2015--2021 ShanXi Han Tuo Technology Co.,Ltd. All rights reserved.
  * @version $Id: 2020/10/6 下午10:26 上午 ParamItem.php $
  */
 class ParamItem extends BaseStructure

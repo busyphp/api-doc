@@ -20,7 +20,7 @@ use ReflectionMethod;
 /**
  * 扫描文档
  * @author busy^life <busy.life@qq.com>
- * @copyright (c) 2015--2019 ShanXi Han Tuo Technology Co.,Ltd. All rights reserved.
+ * @copyright (c) 2015--2021 ShanXi Han Tuo Technology Co.,Ltd. All rights reserved.
  * @version $Id: 2020/9/28 下午9:33 上午 ApiDocScan.php $
  */
 class Scan
