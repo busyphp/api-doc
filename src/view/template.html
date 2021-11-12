@@ -294,7 +294,7 @@
                                             </foreach>
                                         </select>
                                         <else/>
-                                        <input type="text" class="form-control form-control-sm api-doc-test-globals" name="{$param.key}" placeholder="<?=\BusyPHP\apidoc\ApiDoc::parseNoHtml($structure['data']['title']);?>" <?=$param['must'] ? 'required' : '';?>/>
+                                        <input type="text" class="form-control form-control-sm api-doc-test-globals" name="{$param.key}" placeholder="<?=\BusyPHP\apidoc\ApiDoc::parseNoHtml($param['data']['title']);?>" <?=$param['must'] ? 'required' : '';?>/>
                                     </notempty>
                                 </td>
                                 <td class="text-left">

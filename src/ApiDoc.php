@@ -14,8 +14,8 @@ use think\View;
 /**
  * 接口文档类
  * @author busy^life <busy.life@qq.com>
- * @copyright (c) 2015--2019 ShanXi Han Tuo Technology Co.,Ltd. All rights reserved.
- * @version $Id: 2020/9/28 下午9:17 上午 ApiDoc.php $
+ * @copyright (c) 2015--2021 ShanXi Han Tuo Technology Co.,Ltd. All rights reserved.
+ * @version $Id: 2021/11/12 下午11:13 ApiDoc.php $
  */
 class ApiDoc
 {
@@ -119,7 +119,7 @@ class ApiDoc
         $view = Response::create(__DIR__ . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'template.html', 'view', 200);
         $view->assign('list', $this->getModuleList());
         $view->assign('page_title', $pageTitle);
-        $view->assign('print', request()->get('print') > 0);
+        $view->assign('print', App::getInstance()->request->get('print/d', 0, 'intval') > 0);
         $view->assign('info', $this->info);
         
         return $view;
