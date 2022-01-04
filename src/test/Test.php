@@ -44,6 +44,8 @@ class Test
             $http->setHeaders($headers);
         }
         
+        $http->setCookies($request->cookie());
+        
         // 上传文件
         if (isset($_FILES['__api_doc_params__'])) {
             $files    = $_FILES['__api_doc_params__'];
