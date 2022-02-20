@@ -13,6 +13,9 @@
 		"busyphp/busyphp"  : "^6.0",
 		"erusev/parsedown" : "1.7.4"
 	},
+	"require-dev" : {
+		"symfony/var-dumper" : "^4.3|^5.1"
+	},
 	"autoload"    : {
 		"psr-4" : {
 			"BusyPHP\\apidoc\\" : "src"
