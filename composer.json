@@ -1,7 +1,7 @@
 {
 	"name"        : "busyphp/api-doc",
 	"type"        : "library",
-	"description" : "自动化接口文档",
+	"description" : "用于BusyPHP接口文档实时预览模块",
 	"authors"     : [
 		{
 			"name"  : "busy^life",
@@ -22,7 +22,15 @@
 		"preferred-install" : "dist"
 	},
 	"extra"       : {
-		"busyphp" : {
+		"branch-alias" : {
+			"dev-master" : "2.0.x-dev"
+		},
+		"think"        : {
+			"config" : {
+				"busy-apidoc" : "src/config.php"
+			}
+		},
+		"busyphp"      : {
 			"services" : [
 				"BusyPHP\\apidoc\\Service"
 			]
