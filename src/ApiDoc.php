@@ -47,21 +47,21 @@ class ApiDoc
         if (App::getInstance()->request->isAjax()) {
             $test = new Test();
             $test->exec();
-        }
-        
-        $fileList = [];
-        foreach ($files as $file) {
-            if (is_array($file)) {
-                foreach ($file as $item) {
-                    $fileList[] = $item;
+        } else {
+            $fileList = [];
+            foreach ($files as $file) {
+                if (is_array($file)) {
+                    foreach ($file as $item) {
+                        $fileList[] = $item;
+                    }
+                } else {
+                    $fileList[] = $file;
                 }
-            } else {
-                $fileList[] = $file;
             }
+            
+            $this->scan = new Scan($fileList);
+            $this->info = new InfoStructure();
         }
-        
-        $this->scan = new Scan($fileList);
-        $this->info = new InfoStructure();
     }
     
     

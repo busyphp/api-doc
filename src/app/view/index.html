@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{$page_title} - BusyPHP ApiDoc V2.0</title>
+    <css href="__ASSETS__plugins/apidoc/bootstrap/bootstrap.min.css"/>
+    <css href="__ASSETS__plugins/apidoc/font-awesome/css/font-awesome.min.css"/>
+    <style>
+        body, html { background-color: #F3F3F3; display: flex; flex-grow: 1; align-items: center; height: 100vh; justify-items: center;}
+
+        .login-box { width: 320px; padding: 20px; background-color: #FFF; border-radius: 10px; box-shadow: 0 0 15px rgba(0, 0, 0, .1); margin: 0 auto;}
+
+        .login-box h2 { text-align: center; margin: 0; padding: 5px 0 25px 0; font-size: 24px;}
+
+        .login-box .input-group { margin-bottom: 15px;}
+    </style>
+</head>
+<body>
+<form class="login-box" method="post" onsubmit="return false">
+    <input type="hidden" name="doc_name" value="{$doc_name}"/>
+    <h2 class="">{$page_title}</h2>
+    <div class="input-group">
+        <div class="input-group-prepend"><span class="input-group-text"><i class="fa fa-lock"></i></span></div>
+        <input type="password" name="password" placeholder="请输入查看密码" class="form-control"/>
+    </div>
+    <button class="btn btn-primary btn-block">提交</button>
+</form>
+<js href="__ASSETS__plugins/apidoc/js/jquery.min.js"/>
+<js href="__ASSETS__plugins/apidoc/bootstrap/bootstrap.min.js"/>
+<js href="__ASSETS__plugins/apidoc/layer/layer.min.js"/>
+<script>
+    $(function () {
+        $('form').removeAttr('onsubmit').on('submit', function () {
+            var dialog = layer.msg('请稍后...', {
+                icon  : 16,
+                shade : 0.5
+            });
+
+            $.ajax({
+                url      : '{:url($doc_name)}',
+                data     : $(this).serializeArray(),
+                type     : 'post',
+                dataType : 'json',
+                success  : function (data) {
+                    layer.close(dialog);
+                    if (data.status) {
+                        self.location.reload();
+                    } else {
+                        layer.msg(data.msg);
+                    }
+                }
+            });
+
+            return false;
+        });
+    });
+</script>
+</body>
+</html>

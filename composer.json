@@ -18,11 +18,21 @@
 	},
 	"autoload"    : {
 		"psr-4" : {
-			"BusyPHP\\apidoc\\" : "src"
+			"BusyPHP\\apidoc\\"             : "src",
+			"app\\"                         : "app",
+			"core\\"                        : "core",
+			"BusyPHP\\app\\admin\\assets\\" : "vendor/busyphp/busyphp/src/app/admin/static"
 		}
 	},
 	"config"      : {
 		"preferred-install" : "dist"
+	},
+	"scripts"     : {
+		"post-autoload-dump" : [
+			"@php think service:discover",
+			"@php think vendor:publish",
+			"@php think bp:install --dev composer.json"
+		]
 	},
 	"extra"       : {
 		"branch-alias" : {

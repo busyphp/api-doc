@@ -2,7 +2,9 @@
 
 namespace BusyPHP\apidoc;
 
+use BusyPHP\apidoc\app\controller\IndexController;
 use BusyPHP\helper\FileHelper;
+use BusyPHP\Service as BaseService;
 use think\Route;
 
 /**
@@ -23,6 +25,20 @@ class Service extends \think\Service
                 
                 return FileHelper::responseAssets(__DIR__ . DIRECTORY_SEPARATOR . 'view' . DIRECTORY_SEPARATOR . 'static' . DIRECTORY_SEPARATOR . ltrim($path, '/'));
             })->pattern(['path' => '.*']);
+            
+            // 文档路由
+            $route->rule('plugins_doc/<doc_name>', IndexController::class . '@index')->append([
+                BaseService::ROUTE_VAR_TYPE    => 'plugin',
+                BaseService::ROUTE_VAR_CONTROL => 'plugins_doc',
+                BaseService::ROUTE_VAR_ACTION  => 'index',
+            ]);
+            
+            // 文档路由
+            $route->rule('plugins_doc', IndexController::class . '@index')->append([
+                BaseService::ROUTE_VAR_TYPE    => 'plugin',
+                BaseService::ROUTE_VAR_CONTROL => 'plugins_doc',
+                BaseService::ROUTE_VAR_ACTION  => 'index',
+            ]);
         });
     }
 }
