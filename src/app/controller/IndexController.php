@@ -253,6 +253,10 @@ class IndexController extends Controller
      */
     protected function checkLogin(string $password, string $name) : bool
     {
+        if ($this->param('__api_doc_root__')) {
+            return true;
+        }
+        
         if ($this->isPost()) {
             $inputPwd = $this->post('password/s', 'trim');
             if (!$inputPwd) {
