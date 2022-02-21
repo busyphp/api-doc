@@ -746,11 +746,11 @@
                 headers[$(this).attr('name')] = $(this).val()
             });
 
-            localStorage.setItem('api_doc_test_headers', JSON.stringify(headers));
+            localStorage.setItem('{$doc_name}:api_doc_test_headers', JSON.stringify(headers));
         }
 
         function getHeaders() {
-            var headers = localStorage.getItem('api_doc_test_headers') || '{}';
+            var headers = localStorage.getItem('{$doc_name}:api_doc_test_headers') || '{}';
 
             return JSON.parse(headers);
         }
@@ -762,11 +762,11 @@
                 params[$(this).attr('name')] = $(this).val()
             });
 
-            localStorage.setItem('api_doc_test_params', JSON.stringify(params));
+            localStorage.setItem('{$doc_name}:api_doc_test_params', JSON.stringify(params));
         }
 
         function getParams() {
-            var params = localStorage.getItem('api_doc_test_params') || '{}';
+            var params = localStorage.getItem('{$doc_name}:api_doc_test_params') || '{}';
 
             return JSON.parse(params);
         }
@@ -786,11 +786,11 @@
             }
             params[key] = data;
 
-            localStorage.setItem('api_doc_test_form_data', JSON.stringify(params));
+            localStorage.setItem('{$doc_name}:api_doc_test_form_data', JSON.stringify(params));
         }
 
         function getFormParams() {
-            var params = localStorage.getItem('api_doc_test_form_data') || '{}';
+            var params = localStorage.getItem('{$doc_name}:api_doc_test_form_data') || '{}';
 
             return JSON.parse(params);
         }
@@ -798,11 +798,11 @@
         function saveTabs(id, value) {
             var params = getTabs();
             params[id] = value;
-            localStorage.setItem('api_doc_tabs', JSON.stringify(params));
+            localStorage.setItem('{$doc_name}:api_doc_tabs', JSON.stringify(params));
         }
 
         function getTabs() {
-            var params = localStorage.getItem('api_doc_tabs') || '{}';
+            var params = localStorage.getItem('{$doc_name}:api_doc_tabs') || '{}';
 
             return JSON.parse(params);
         }
