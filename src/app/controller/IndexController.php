@@ -5,6 +5,8 @@ namespace BusyPHP\apidoc\app\controller;
 use BusyPHP\apidoc\ApiDoc;
 use BusyPHP\apidoc\structs\AppendixItem;
 use BusyPHP\apidoc\structs\DataStructure;
+use BusyPHP\apidoc\structs\ErrorCodeItem;
+use BusyPHP\apidoc\structs\HeaderItem;
 use BusyPHP\apidoc\structs\InfoStructure;
 use BusyPHP\apidoc\structs\ParamItem;
 use BusyPHP\apidoc\structs\ReturnItem;
@@ -106,12 +108,16 @@ class IndexController extends Controller
             $headers = $this->app->invokeFunction($headers);
         }
         foreach ((array) $headers as $item) {
-            $name = trim($item['name'] ?? '');
-            if (!$name) {
-                continue;
+            if ($item instanceof HeaderItem) {
+                $info->addHeaderItem($item);
+            } else {
+                $name = trim($item['name'] ?? '');
+                if (!$name) {
+                    continue;
+                }
+                
+                $info->addHeader($name, $item['must'] ?? false, $item['desc'] ?? '');
             }
-            
-            $info->addHeader($name, $item['must'] ?? false, $item['desc'] ?? '');
         }
         
         // 错误码
@@ -120,11 +126,15 @@ class IndexController extends Controller
             $codes = $this->app->invokeFunction($codes);
         }
         foreach ((array) $codes as $item) {
-            $code = trim($item['code'] ?? '');
-            if ($code === '') {
-                continue;
+            if ($item instanceof ErrorCodeItem) {
+                $info->addErrorCodeItem($item);
+            } else {
+                $code = trim($item['code'] ?? '');
+                if ($code === '') {
+                    continue;
+                }
+                $info->addErrorCode($code, $item['name'] ?? '', $item['desc'] ?? '');
             }
-            $info->addErrorCode($code, $item['name'] ?? '', $item['desc'] ?? '');
         }
         
         // 全局参数

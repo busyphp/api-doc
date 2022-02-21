@@ -176,6 +176,16 @@ class InfoStructure extends BaseStructure
     
     
     /**
+     * 添加全局请求头
+     * @param HeaderItem $headerItem
+     */
+    public function addHeaderItem(HeaderItem $headerItem)
+    {
+        $this->headerList->push($headerItem);
+    }
+    
+    
+    /**
      * 设置错误代码
      * @param ErrorCodeList $errorCodeList
      */
@@ -194,6 +204,16 @@ class InfoStructure extends BaseStructure
     public function addErrorCode($code, $name, $desc)
     {
         $this->errorCodeList->push(new ErrorCodeItem($code, $name, $desc));
+    }
+    
+    
+    /**
+     * 添加错误代码
+     * @param ErrorCodeItem $errorCodeItem
+     */
+    public function addErrorCodeItem(ErrorCodeItem $errorCodeItem)
+    {
+        $this->errorCodeList->push($errorCodeItem);
     }
     
     
