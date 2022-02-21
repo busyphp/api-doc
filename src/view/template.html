@@ -852,7 +852,7 @@
                 $(this).append($hideHeaderBox);
             }
 
-            $hideHeaderBox.html('');
+            $hideHeaderBox.html('<input type="hidden" name="doc_name" value="{$doc_name}"/>');
             for (var key in headers) {
                 $hideHeaderBox.append('<input type="hidden" name="__api_doc_headers__[' + key + ']" value="' + (headers[key] || '') + '"/>');
             }

@@ -216,7 +216,7 @@ class IndexController extends Controller
             $this->app->invokeFunction($handle);
         }
         
-        return $doc->renderToHTML($pageTitle);
+        return $doc->renderToHTML($docName, $pageTitle);
     }
     
     

@@ -102,9 +102,10 @@ class ApiDoc
     /**
      * 渲染成HTML
      * @param string $pageTitle
+     * @param string $docName
      * @return View
      */
-    public function renderToHTML($pageTitle = 'API接口文档')
+    public function renderToHTML(string $docName, string $pageTitle = 'API接口文档')
     {
         $pageTitle = $this->info->title ?: $pageTitle;
         
@@ -121,6 +122,7 @@ class ApiDoc
         $view->assign('page_title', $pageTitle);
         $view->assign('print', App::getInstance()->request->get('print/d', 0, 'intval') > 0);
         $view->assign('info', $this->info);
+        $view->assign('doc_name', $docName);
         
         return $view;
     }
