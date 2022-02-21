@@ -29,11 +29,21 @@ class ReturnItem extends BaseStructure
     public $data;
     
     
-    public function __construct($key = '', $type = '', $data = null)
+    /**
+     * @param string                    $key
+     * @param string                    $type
+     * @param DataStructure|null|string $data
+     */
+    public function __construct(string $key = '', string $type = '', $data = null)
     {
         $this->key  = $key;
         $this->type = $type;
-        $this->data = $data;
+        
+        if (is_string($data) && $data) {
+            $data = new DataStructure($data);
+        }
+        
+        $this->data = $data ?? new DataStructure();
     }
     
     

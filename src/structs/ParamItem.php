@@ -37,16 +37,21 @@ class ParamItem extends BaseStructure
     
     /**
      * ParamStructure constructor.
-     * @param string             $key
-     * @param string             $type
-     * @param bool               $must
-     * @param DataStructure|null $data
+     * @param string                    $key
+     * @param string                    $type
+     * @param bool                      $must
+     * @param DataStructure|string|null $data
      */
-    public function __construct($key = '', $type = '', $must = false, $data = null)
+    public function __construct(string $key = '', string $type = '', bool $must = false, $data = null)
     {
         $this->key  = $key;
         $this->type = $type;
         $this->must = $must;
+        
+        if (is_string($data) && $data) {
+            $data = new DataStructure($data);
+        }
+        
         $this->data = $data ?? new DataStructure();
     }
 }

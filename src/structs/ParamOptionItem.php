@@ -23,10 +23,19 @@ class ParamOptionItem extends BaseStructure
     public $data;
     
     
-    public function __construct($key = '', $data = null)
+    /**
+     * @param string                    $key
+     * @param DataStructure|string|null $data
+     */
+    public function __construct(string $key = '', $data = null)
     {
-        $this->key  = $key;
-        $this->data = $data;
+        $this->key = $key;
+        
+        if (is_string($data) && $data) {
+            $data = new DataStructure($data);
+        }
+        
+        $this->data = $data ?? new DataStructure();
     }
     
     

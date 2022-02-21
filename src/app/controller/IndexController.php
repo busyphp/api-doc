@@ -87,9 +87,15 @@ class IndexController extends Controller
         
         // 入口地址
         if ($debugRoot = $this->getDocConfig($docName, 'url.debug')) {
+            if ($debugRoot instanceof Closure) {
+                $debugRoot = $this->app->invokeFunction($debugRoot);
+            }
             $info->setDebugRootUrl($debugRoot);
         }
         if ($releaseRoot = $this->getDocConfig($docName, 'url.release')) {
+            if ($releaseRoot instanceof Closure) {
+                $releaseRoot = $this->app->invokeFunction($releaseRoot);
+            }
             $info->setReleaseRootUrl($releaseRoot);
         }
         
